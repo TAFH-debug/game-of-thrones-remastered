@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://col10ak1vq1ak"]
+
+[ext_resource type="Texture2D" uid="uid://b73e6wn2m6kn5" path="res://Sprites/gameboardnew_0000_Gameboard.png" id="1_a02cp"]
+
+[node name="world" type="Node3D" unique_id=1367412988]
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1635324967]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+texture = ExtResource("1_a02cp")
