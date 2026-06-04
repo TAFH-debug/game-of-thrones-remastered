@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://bcwxnoy4ijp7g"]
+
+[ext_resource type="Script" uid="uid://bnusjxjohjtlx" path="res://scripts/main_menu/host_server_button.gd" id="1_ekxnf"]
+[ext_resource type="Script" uid="uid://dgeiqjeub7um3" path="res://scripts/main_menu/join_server_button.gd" id="2_bqqt6"]
+[ext_resource type="Script" uid="uid://bpprk5424xe30" path="res://scripts/main_menu/nickname_change_button.gd" id="3_bqqt6"]
+
+[node name="MainMenu" type="Control" unique_id=1077006797]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=398803859]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="MarginContainer" unique_id=1388365309]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer3" unique_id=1374708476]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer3/VBoxContainer" unique_id=1510000812]
+layout_mode = 2
+text = "Game of Thrones: Remastered"
+
+[node name="HostServerButton" type="Button" parent="MarginContainer/VBoxContainer3/VBoxContainer" unique_id=25609523]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+text = "Host Game"
+script = ExtResource("1_ekxnf")
+
+[node name="IPInput" type="TextEdit" parent="MarginContainer/VBoxContainer3/VBoxContainer" unique_id=581114458]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "localhost"
+placeholder_text = "Enter ip address..."
+
+[node name="JoinServerButton" type="Button" parent="MarginContainer/VBoxContainer3/VBoxContainer" unique_id=2111614632 node_paths=PackedStringArray("input")]
+layout_mode = 2
+text = "Join Game"
+script = ExtResource("2_bqqt6")
+input = NodePath("../IPInput")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer3" unique_id=1579405882]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="NicknameInput" type="TextEdit" parent="MarginContainer/VBoxContainer3/VBoxContainer2" unique_id=1393372063]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+placeholder_text = "Enter nickname..."
+
+[node name="NicknameChangeButton" type="Button" parent="MarginContainer/VBoxContainer3/VBoxContainer2" unique_id=1286953901 node_paths=PackedStringArray("nickname_input")]
+layout_mode = 2
+text = "Change Nickname"
+script = ExtResource("3_bqqt6")
+nickname_input = NodePath("../NicknameInput")

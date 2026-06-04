@@ -15,9 +15,18 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="game-of-thrones-remastered"
-run/main_scene="uid://col10ak1vq1ak"
+run/main_scene="uid://bcwxnoy4ijp7g"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+PlayerSettings="*uid://g0bo4mi4tlvu"
+Multiplayer="*uid://tecqssu8l85r"
+
+[display]
+
+window/stretch/aspect="ignore"
 
 [editor]
 

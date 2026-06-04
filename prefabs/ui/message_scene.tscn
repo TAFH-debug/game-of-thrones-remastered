@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://ds842osihgwpb"]
+
+[ext_resource type="FontFile" uid="uid://dnp1tak3l11o1" path="res://assets/fonts/Firlest-Regular.otf" id="1_pqnoq"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_qw0ux"]
+font = ExtResource("1_pqnoq")
+font_color = Color(0, 0, 0, 1)
+
+[node name="MessageScene" type="HBoxContainer" unique_id=156790314]
+offset_right = 1.0
+offset_bottom = 23.0
+
+[node name="Label" type="Label" parent="." unique_id=564343813]
+layout_mode = 2
+label_settings = SubResource("LabelSettings_qw0ux")
