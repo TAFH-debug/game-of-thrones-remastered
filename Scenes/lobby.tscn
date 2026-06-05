@@ -1,0 +1,157 @@
+[gd_scene format=3 uid="uid://cqpvxen606lxg"]
+
+[ext_resource type="Texture2D" uid="uid://d2ps21isdrrgq" path="res://assets/sprites/wooden-floor-background_53876-88628.png" id="1_apkv3"]
+[ext_resource type="Script" uid="uid://bttcs6qkriec7" path="res://scripts/lobby/player_list.gd" id="1_o1atq"]
+[ext_resource type="FontFile" uid="uid://dnp1tak3l11o1" path="res://assets/fonts/Firlest-Regular.otf" id="1_pc087"]
+[ext_resource type="PackedScene" uid="uid://55pmm82152kk" path="res://prefabs/ui/player_label.tscn" id="2_5gu6x"]
+[ext_resource type="Script" uid="uid://bs8dd2v2wotge" path="res://scripts/lobby/ready_button.gd" id="3_q60fs"]
+[ext_resource type="Texture2D" uid="uid://b55ha0mrscetf" path="res://assets/sprites/sprite4.png" id="6_omrgh"]
+[ext_resource type="Texture2D" uid="uid://dyo8wnnvq1qvd" path="res://assets/sprites/sprite2.png" id="7_ncsg4"]
+[ext_resource type="Script" uid="uid://t5diosqwlcic" path="res://scripts/lobby/chat_panel.gd" id="8_ncsg4"]
+[ext_resource type="PackedScene" uid="uid://ds842osihgwpb" path="res://prefabs/ui/message_scene.tscn" id="9_07nfq"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_pc087"]
+font = ExtResource("1_pc087")
+font_size = 48
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_apkv3"]
+font = ExtResource("1_pc087")
+font_size = 40
+font_color = Color(0, 0, 0, 1)
+shadow_color = Color(0.3862508, 0.38625085, 0.38625085, 1)
+
+[node name="Lobby" type="Control" unique_id=274292046]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=1575131811]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_apkv3")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="NinePatchRect" unique_id=1882150375]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NinePatchRect/HBoxContainer" unique_id=1913310330]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="NinePatchRect/HBoxContainer/VBoxContainer" unique_id=1459702688]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="PlayerList" type="VBoxContainer" parent="NinePatchRect/HBoxContainer/VBoxContainer/MarginContainer" unique_id=285707613]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 15
+script = ExtResource("1_o1atq")
+labelScene = ExtResource("2_5gu6x")
+
+[node name="Label" type="Label" parent="NinePatchRect/HBoxContainer/VBoxContainer/MarginContainer/PlayerList" unique_id=1405921799]
+layout_mode = 2
+text = "Players"
+label_settings = SubResource("LabelSettings_pc087")
+
+[node name="MarginContainer2" type="MarginContainer" parent="NinePatchRect/HBoxContainer/VBoxContainer" unique_id=1558168]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="NinePatchRect/HBoxContainer/VBoxContainer/MarginContainer2" unique_id=1075514041]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="TextureButton" type="TextureButton" parent="NinePatchRect/HBoxContainer/VBoxContainer/MarginContainer2/HBoxContainer" unique_id=1600735512]
+layout_mode = 2
+size_flags_vertical = 0
+texture_normal = ExtResource("6_omrgh")
+texture_pressed = ExtResource("7_ncsg4")
+script = ExtResource("3_q60fs")
+
+[node name="MarginContainer" type="MarginContainer" parent="NinePatchRect/HBoxContainer/VBoxContainer/MarginContainer2/HBoxContainer/TextureButton" unique_id=311775474]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 10
+
+[node name="Label" type="Label" parent="NinePatchRect/HBoxContainer/VBoxContainer/MarginContainer2/HBoxContainer/TextureButton/MarginContainer" unique_id=939546812]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Ready"
+label_settings = SubResource("LabelSettings_apkv3")
+
+[node name="TextureButton2" type="TextureButton" parent="NinePatchRect/HBoxContainer/VBoxContainer/MarginContainer2/HBoxContainer" unique_id=521730527]
+layout_mode = 2
+size_flags_vertical = 0
+texture_normal = ExtResource("6_omrgh")
+texture_pressed = ExtResource("7_ncsg4")
+
+[node name="MarginContainer" type="MarginContainer" parent="NinePatchRect/HBoxContainer/VBoxContainer/MarginContainer2/HBoxContainer/TextureButton2" unique_id=959920674]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 10
+
+[node name="Label" type="Label" parent="NinePatchRect/HBoxContainer/VBoxContainer/MarginContainer2/HBoxContainer/TextureButton2/MarginContainer" unique_id=1129721526]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Gay"
+label_settings = SubResource("LabelSettings_apkv3")
+
+[node name="Chat" type="VBoxContainer" parent="NinePatchRect/HBoxContainer" unique_id=1229943857]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("8_ncsg4")
+message_scene = ExtResource("9_07nfq")
+
+[node name="MarginContainer" type="MarginContainer" parent="NinePatchRect/HBoxContainer/Chat" unique_id=289246301]
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NinePatchRect/HBoxContainer/Chat/MarginContainer" unique_id=95482307]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="InputConatiner" type="HBoxContainer" parent="NinePatchRect/HBoxContainer/Chat" unique_id=771089578]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="NinePatchRect/HBoxContainer/Chat/InputConatiner" unique_id=145722915]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="NinePatchRect/HBoxContainer/Chat/InputConatiner" unique_id=1786561279]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Send"

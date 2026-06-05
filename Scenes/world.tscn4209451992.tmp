@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://col10ak1vq1ak"]
+
+[ext_resource type="Texture2D" uid="uid://6ascu0vsoq2n" path="res://Sprites/nathan-mcguire-got-westerosmap.jpg" id="1_go701"]
+[ext_resource type="Texture2D" uid="uid://upcd4eb65fon" path="res://Sprites/gameboardnew_0000s_0001_TheReach.png" id="2_5a7ea"]
+[ext_resource type="Shader" uid="uid://cv3554qadcm1v" path="res://Shaders/territory_selected.gdshader" id="2_5ukr8"]
+[ext_resource type="Script" uid="uid://0yrvfk4of083" path="res://Scenes/multiplayer.gd" id="3_5a7ea"]
+[ext_resource type="Script" uid="uid://bnbf2i6nrtjm2" path="res://Scenes/territory.gd" id="3_fo5ed"]
+[ext_resource type="Script" uid="uid://bkwr38aoc3dgs" path="res://Scripts/camera_3d.gd" id="4_8j60k"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o06y3"]
+render_priority = 0
+shader = ExtResource("2_5ukr8")
+shader_parameter/active = false
+
+[node name="world" type="Node3D" unique_id=1367412988]
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1635324967]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+texture = ExtResource("1_go701")
+
+[node name="territory_the_reach" type="Sprite3D" parent="." unique_id=1833943431]
+transform = Transform3D(2.2, 0, 0, 0, -9.616505e-08, 2.2, 0, -2.2, -9.616505e-08, -0.344, 0.1, 8.691)
+material_override = SubResource("ShaderMaterial_o06y3")
+texture = ExtResource("2_5a7ea")
+script = ExtResource("3_fo5ed")
+
+[node name="Area3D" type="Area3D" parent="territory_the_reach" unique_id=1755433157]
+transform = Transform3D(1, 0, 0, 0, 1, -3.5527137e-15, 0, 3.5527137e-15, 1, 0, 0, 0)
+
+[node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="territory_the_reach/Area3D" unique_id=1161986584]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+polygon = PackedVector2Array(-6.5612345, -6.0990715, -6.565632, -4.976673, -8.415106, -4.49572, -9.045624, -1.9073257, -10.162489, -1.0214157, -10.4730425, 1.0395927, -9.336201, 2.0610313, -1.8679359, 1.4270554, 3.6395273, 4.6702805, 7.325019, 6.1354904, 7.6778297, 2.7265587, 9.607545, 0.78251266, 9.389341, -0.7501831, 5.895055, -3.1298943, 6.3382397, -4.583885, 7.0927887, -6.0131836, 5.032093, -7.8510437, 3.6923182, -7.5925255, 3.069234, -6.7230873, 1.3806314, -6.235485, -1.196219, -4.7826614, -3.5929205, -4.7428017)
+
+[node name="multiplayer" type="Node3D" parent="." unique_id=1031329486]
+unique_name_in_owner = true
+script = ExtResource("3_5a7ea")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=682826465]
+transform = Transform3D(1, 0, 0, 0, 0.17364821, 0.9848076, 0, -0.9848076, 0.17364821, 0, 4.315606, 0)
+script = ExtResource("4_8j60k")

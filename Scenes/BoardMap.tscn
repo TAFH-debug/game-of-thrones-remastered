@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dayf2ygjs41ag"]
 
-[ext_resource type="Texture2D" uid="uid://6ascu0vsoq2n" path="res://Sprites/nathan-mcguire-got-westerosmap.jpg" id="1_jrr3v"]
+[ext_resource type="Texture2D" uid="uid://6ascu0vsoq2n" path="res://assets/sprites/nathan-mcguire-got-westerosmap.jpg" id="1_jrr3v"]
 
 [node name="BoardMap" type="Node3D" unique_id=215248544]
 

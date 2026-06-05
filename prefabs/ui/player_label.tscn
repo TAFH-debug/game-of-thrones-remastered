@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://55pmm82152kk"]
+
+[ext_resource type="Script" uid="uid://bvhnfpjh670f1" path="res://prefabs/ui/player_label.gd" id="1_t8o1f"]
+[ext_resource type="FontFile" uid="uid://dnp1tak3l11o1" path="res://assets/fonts/Firlest-Regular.otf" id="2_js6lm"]
+[ext_resource type="Texture2D" uid="uid://bpkf4m1fdmj6c" path="res://assets/sprites/sword.png" id="3_qm6u5"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_t8o1f"]
+font = ExtResource("2_js6lm")
+font_size = 32
+font_color = Color(0, 0, 0, 1)
+
+[node name="PlayerLabel" type="MarginContainer" unique_id=1127571972]
+offset_right = 182.0
+offset_bottom = 45.0
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+script = ExtResource("1_t8o1f")
+
+[node name="Container" type="HBoxContainer" parent="." unique_id=370745083]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="Container" unique_id=1622822228]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Placeholder"
+label_settings = SubResource("LabelSettings_t8o1f")
+
+[node name="ReadyLabel" type="TextureRect" parent="Container" unique_id=850443460]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+texture = ExtResource("3_qm6u5")
+expand_mode = 1
