@@ -26,7 +26,6 @@ Multiplayer="*uid://tecqssu8l85r"
 
 [display]
 
-window/size/mode=2
 window/stretch/aspect="ignore"
 
 [editor]
