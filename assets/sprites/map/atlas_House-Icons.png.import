@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://chrj21fe7piy6"
-path="res://.godot/imported/atlas_House-Icons.png-181c90641fb991e9f13d5e4ffcc607ee.ctex"
+uid="uid://di0ua4lrpt7iy"
+path="res://.godot/imported/atlas_house-icons.png-4f1aa9c814dde8899c3d1ba160c2358c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/map/atlas_House-Icons.png"
-dest_files=["res://.godot/imported/atlas_House-Icons.png-181c90641fb991e9f13d5e4ffcc607ee.ctex"]
+source_file="res://assets/sprites/map/atlas_house-icons.png"
+dest_files=["res://.godot/imported/atlas_house-icons.png-4f1aa9c814dde8899c3d1ba160c2358c.ctex"]
 
 [params]
 
