@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bltfbd4fhsro6"]
+
+[ext_resource type="Script" uid="uid://cxih6rj14xx0" path="res://scenes/systems/camera/drag_camera.gd" id="1_r7xgn"]
+
+[node name="DragCamera" type="Camera3D" unique_id=1663257898]
+script = ExtResource("1_r7xgn")
