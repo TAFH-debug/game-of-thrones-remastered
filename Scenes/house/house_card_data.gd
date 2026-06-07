@@ -1,14 +1,28 @@
 class_name HouseCardData
 extends Resource
 
-enum AbilityTrigger { NONE, ON_WIN, ON_LOSS, IMMEDIATE, CONDITIONAL }
+enum AbilityTrigger { 
+	NONE,
+	IMMEDIATE,
+	PRE_REVEAL,
+	ON_ATTACK,
+	ON_DEFEND,
+	ON_WIN,
+	ON_LOSS,
+	POST_COMBAT,
+	CONDITIONAL
+	}
 
 @export var card_name: String
 @export var card_id: StringName
-@export var house_id: StringName 
-@export_range(0, 67) var combat_strength: int
-@export_range(0, 2) var sword_icons: int
-@export_range(0, 2) var fortification_icons: int
+@export var house_id: StringName:
+	set(val):
+		if val.length() > 3:
+			push_warning("house_id '%s' exceeded 3 chars, truncated" % val)
+		house_id = val.left(3)
+@export_range(0, 4) var combat_strength: int
+@export_range(0, 3) var sword_icons: int
+@export_range(0, 3) var fortification_icons: int
 @export var ability_desc: String
 @export var ability_trigger: AbilityTrigger
 

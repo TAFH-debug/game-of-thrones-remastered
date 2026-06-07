@@ -1,12 +1,12 @@
 class_name OrderTokenData
 extends Resource
 
-enum OrderType { MARCH, RAID, SUPPORT, CONSOLIDATE_POWER, DEFEND }
+enum OrderType { MARCH, RAID, SUPPORT, CONSOLIDATE_POWER, DEFENSE }
 
 @export var order_type: OrderType
-@export var is_special: bool = false
-@export_range(0,2) var defense_modifier: int = 0
-@export_range(-1,1) var march_modifier: int = 0
+@export var is_special: bool
+@export_range(0,2) var defense_modifier: int
+@export_range(-1,1) var march_modifier: int
 
 func _init(
 	p_order_type: OrderType = OrderType.RAID,
@@ -16,5 +16,5 @@ func _init(
 ) -> void:
 	order_type = p_order_type
 	is_special = p_is_special
-	defense_modifier = p_defense_modifier
-	march_modifier = p_march_modifier
+	defense_modifier = p_defense_modifier if p_order_type == OrderType.DEFENSE else 0
+	march_modifier = p_march_modifier if p_order_type == OrderType.MARCH else 0
