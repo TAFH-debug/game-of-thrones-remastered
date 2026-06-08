@@ -1,0 +1,134 @@
+[gd_scene format=3 uid="uid://ct4whkmlbs1ok"]
+
+[ext_resource type="Script" uid="uid://bnqp8o5ijp0y" path="res://scenes/board/territory/territory_info.gd" id="1_mglfw"]
+[ext_resource type="Texture2D" uid="uid://bogosdmuckfrh" path="res://assets/sprites/map/bg_region_info.png" id="2_orn4v"]
+[ext_resource type="FontFile" uid="uid://hkjpfk5sciuf" path="res://assets/fonts/Romic Std Bold.otf" id="3_bte8o"]
+[ext_resource type="Texture2D" uid="uid://6juu52pmgo8y" path="res://assets/sprites/map/icon_supply_info.png" id="4_uhk6r"]
+[ext_resource type="Texture2D" uid="uid://bo04iwhqcr6h6" path="res://assets/sprites/map/icon_crown_small.png" id="5_bn4hx"]
+[ext_resource type="Texture2D" uid="uid://di0ua4lrpt7iy" path="res://assets/sprites/map/atlas_house-icons.png" id="6_feba0"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rngku"]
+content_margin_left = 47.0
+content_margin_right = 50.0
+texture = ExtResource("2_orn4v")
+texture_margin_left = 50.0
+texture_margin_top = 6.0
+texture_margin_right = 50.0
+texture_margin_bottom = 6.0
+axis_stretch_horizontal = 2
+
+[sub_resource type="FontVariation" id="FontVariation_uhk6r"]
+base_font = ExtResource("3_bte8o")
+
+[sub_resource type="LabelSettings" id="LabelSettings_rb0yy"]
+font = SubResource("FontVariation_uhk6r")
+font_size = 24
+font_color = Color(0.28235295, 0.2, 0.11764706, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4au83"]
+atlas = ExtResource("6_feba0")
+region = Rect2(-15, 0, 94, 109)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_0ryq7"]
+viewport_path = NodePath("SubViewport")
+
+[node name="TerritoryInfo" type="Node3D" unique_id=1018462692]
+script = ExtResource("1_mglfw")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=660401758]
+transparent_bg = true
+size = Vector2i(512, 109)
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport" unique_id=1722470148]
+layout_direction = 2
+offset_right = 505.0
+offset_bottom = 105.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/margin_left = 47
+theme_override_constants/margin_top = 34
+theme_override_constants/margin_bottom = 34
+
+[node name="Panel" type="PanelContainer" parent="SubViewport/MarginContainer" unique_id=1079197079]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxTexture_rngku")
+
+[node name="HBox" type="HBoxContainer" parent="SubViewport/MarginContainer/Panel" unique_id=723422767]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport/MarginContainer/Panel/HBox" unique_id=909713008]
+layout_mode = 2
+theme_override_constants/margin_right = 8
+
+[node name="NameLabel" type="Label" parent="SubViewport/MarginContainer/Panel/HBox/MarginContainer" unique_id=1525620212]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Riverrun"
+label_settings = SubResource("LabelSettings_rb0yy")
+max_lines_visible = 1
+
+[node name="Supply" type="MarginContainer" parent="SubViewport/MarginContainer/Panel/HBox" unique_id=452950298]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_right = 12
+
+[node name="TextureRect" type="TextureRect" parent="SubViewport/MarginContainer/Panel/HBox/Supply" unique_id=1108811733]
+layout_mode = 2
+texture = ExtResource("4_uhk6r")
+expand_mode = 3
+stretch_mode = 3
+
+[node name="Supply2" type="MarginContainer" parent="SubViewport/MarginContainer/Panel/HBox" unique_id=424977088]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_right = 12
+
+[node name="TextureRect" type="TextureRect" parent="SubViewport/MarginContainer/Panel/HBox/Supply2" unique_id=1956259996]
+layout_mode = 2
+texture = ExtResource("4_uhk6r")
+expand_mode = 3
+stretch_mode = 3
+
+[node name="Crown" type="MarginContainer" parent="SubViewport/MarginContainer/Panel/HBox" unique_id=2131110661]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_right = 12
+
+[node name="TextureRect" type="TextureRect" parent="SubViewport/MarginContainer/Panel/HBox/Crown" unique_id=650511904]
+layout_mode = 2
+texture = ExtResource("5_bn4hx")
+expand_mode = 3
+stretch_mode = 3
+
+[node name="Crown2" type="MarginContainer" parent="SubViewport/MarginContainer/Panel/HBox" unique_id=388831596]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_right = 12
+
+[node name="TextureRect" type="TextureRect" parent="SubViewport/MarginContainer/Panel/HBox/Crown2" unique_id=570574779]
+layout_mode = 2
+texture = ExtResource("5_bn4hx")
+expand_mode = 3
+stretch_mode = 3
+
+[node name="OwnerIcon" type="TextureRect" parent="SubViewport" unique_id=467477259]
+offset_right = 94.0
+offset_bottom = 109.0
+texture = SubResource("AtlasTexture_4au83")
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=370995599]
+offset = Vector2(209, 0)
+pixel_size = 0.0008
+billboard = 1
+double_sided = false
+fixed_size = true
+alpha_cut = 1
+texture = SubResource("ViewportTexture_0ryq7")
+
+[node name="TestSprite2D" type="Sprite2D" parent="." unique_id=1119667758]
+visible = false
+texture = SubResource("ViewportTexture_0ryq7")
+centered = false

@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://4663gcg7mnsm"]
+
+[ext_resource type="Script" uid="uid://dg5qyebasicfe" path="res://scenes/board/territory/territory.gd" id="1_km8mi"]
+[ext_resource type="PackedScene" uid="uid://ct4whkmlbs1ok" path="res://scenes/board/territory/territory_info.tscn" id="1_y4d7s"]
+
+[node name="Territory" type="Node3D" unique_id=231744915]
+script = ExtResource("1_km8mi")
+
+[node name="TerritoryInfo" parent="." unique_id=1018462692 instance=ExtResource("1_y4d7s")]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.2, 0)
+territory_name = "Beyond the Wall"
