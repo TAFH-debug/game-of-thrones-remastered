@@ -5,6 +5,7 @@ enum Stage { PLANNING, WESTEROS }
 var stage: Stage = Stage.PLANNING
 var players: Array[GamePlayerData] = []
 var influence_tracks: Array[InfluenceTrack] = []
+var orders = []
 
 func start_game(players_data: Array[PlayerData]):
 	if players_data.size() > 6:
@@ -28,19 +29,19 @@ func setup_game(players: Array[Dictionary]):
 		players.append(gp_data)
 		
 @rpc("any_peer", "call_local")
-func place_orders(orders: Array[Dictionary]):
+func place_orders(orders_data: Array[Dictionary]):
 	if not multiplayer.is_server():
 		return
 		
 	if not stage == Stage.PLANNING:
 		return
 		
-	for order in orders:
-		pass
+	for order in orders_data:
+		order["type"];
 		
-	
-	
 @rpc("any_peer")
 func resolve_order(territory_name: String, params: Dictionary):
 	if not multiplayer.is_server():
 		return
+	
+	

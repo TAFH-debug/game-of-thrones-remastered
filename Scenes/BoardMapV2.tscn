@@ -12,8 +12,8 @@ volumetric_fog_detail_spread = 0.5
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_l0872"]
 emission_shape = 3
-emission_box_extents = Vector3(5, 1, 30)
-gravity = Vector3(0, -0.1, 0)
+emission_box_extents = Vector3(1, 1, 30)
+gravity = Vector3(0, 0, 0)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_njgdr"]
 noise_type = 3
@@ -37,13 +37,13 @@ size = Vector2(20, 20)
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_aib4a"]
 emission_shape = 3
-emission_box_extents = Vector3(5, 1, 30)
-gravity = Vector3(0, -0.1, 0)
+emission_box_extents = Vector3(1, 1, 30)
+gravity = Vector3(0, 0, 0)
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_njgdr"]
 emission_shape = 3
-emission_box_extents = Vector3(20, 1, 5)
-gravity = Vector3(0, -0.1, 0)
+emission_box_extents = Vector3(20, 1, 1)
+gravity = Vector3(0, 0, 0)
 
 [node name="BoardMap" type="Node3D" unique_id=359694223]
 
@@ -736,33 +736,33 @@ polygon = PackedVector2Array(6.36261, 0.3056, 6.33405, 0.30875, 6.30568, 0.29426
 environment = SubResource("Environment_iipk8")
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=199094583]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.95511, 1.8090401, 0)
-amount = 100
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.020842, 1.8090401, 0)
+amount = 48
 lifetime = 5.0
-visibility_aabb = AABB(10, 0, -15, 15, 8, 30)
+visibility_aabb = AABB(10, 0, -25, 15, 2, 50)
 process_material = SubResource("ParticleProcessMaterial_l0872")
 draw_pass_1 = SubResource("QuadMesh_aib4a")
 
 [node name="GPUParticles3D2" type="GPUParticles3D" parent="." unique_id=1255981480]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.133268, 1.8090401, 0)
-amount = 100
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.011318, 1.8090401, 0)
+amount = 48
 lifetime = 5.0
-visibility_aabb = AABB(-30, 0, -15, 15, 8, 30)
+visibility_aabb = AABB(-20, 0, -25, 10, 2, 50)
 process_material = SubResource("ParticleProcessMaterial_aib4a")
 draw_pass_1 = SubResource("QuadMesh_aib4a")
 
 [node name="GPUParticles3D3" type="GPUParticles3D" parent="." unique_id=1119795912]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.021432877, 1.8090401, 25.73639)
-amount = 100
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.021432877, 1.8090401, 21.450493)
+amount = 48
 lifetime = 5.0
-visibility_aabb = AABB(-15, 0, -30, 30, 8, 30)
+visibility_aabb = AABB(-15, 0, -30, 30, 2, 30)
 process_material = SubResource("ParticleProcessMaterial_njgdr")
 draw_pass_1 = SubResource("QuadMesh_aib4a")
 
 [node name="GPUParticles3D4" type="GPUParticles3D" parent="." unique_id=898154265]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.021432877, 1.8090401, -32.97386)
-amount = 100
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.021432877, 1.8090401, -29.43942)
+amount = 48
 lifetime = 5.0
-visibility_aabb = AABB(-15, 0, 0, 30, 8, 40)
+visibility_aabb = AABB(-15, 0, 0, 30, 2, 40)
 process_material = SubResource("ParticleProcessMaterial_njgdr")
 draw_pass_1 = SubResource("QuadMesh_aib4a")

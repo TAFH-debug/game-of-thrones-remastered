@@ -11,7 +11,7 @@ enum AbilityTrigger {
 	ON_LOSS,
 	POST_COMBAT,
 	CONDITIONAL
-	}
+}
 
 @export var card_name: String
 @export var card_id: StringName
