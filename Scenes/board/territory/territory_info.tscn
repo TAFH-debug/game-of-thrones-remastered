@@ -5,7 +5,7 @@
 [ext_resource type="FontFile" uid="uid://hkjpfk5sciuf" path="res://assets/fonts/Romic Std Bold.otf" id="3_bte8o"]
 [ext_resource type="Texture2D" uid="uid://6juu52pmgo8y" path="res://assets/sprites/map/icon_supply_info.png" id="4_uhk6r"]
 [ext_resource type="Texture2D" uid="uid://bo04iwhqcr6h6" path="res://assets/sprites/map/icon_crown_small.png" id="5_bn4hx"]
-[ext_resource type="Texture2D" uid="uid://di0ua4lrpt7iy" path="res://assets/sprites/map/atlas_house-icons.png" id="6_feba0"]
+[ext_resource type="Texture2D" uid="uid://di0ua4lrpt7iy" path="res://assets/sprites/map/atlas_House-Icons.png" id="6_feba0"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rngku"]
 content_margin_left = 47.0

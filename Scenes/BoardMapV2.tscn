@@ -2,7 +2,48 @@
 
 [ext_resource type="Script" uid="uid://bkwr38aoc3dgs" path="res://scripts/camera_3d.gd" id="1_iipk8"]
 [ext_resource type="Texture2D" uid="uid://dq5tvy3nesbm4" path="res://assets/sprites/map/MapStdRes.webp" id="2_njgdr"]
-[ext_resource type="PackedScene" uid="uid://ct4whkmlbs1ok" path="res://scenes/territory_info.tscn" id="3_l0872"]
+[ext_resource type="PackedScene" uid="uid://ct4whkmlbs1ok" path="res://scenes/board/territory/territory_info.tscn" id="3_l0872"]
+[ext_resource type="Shader" uid="uid://ddxh4layydoca" path="res://shaders/fog.gdshader" id="4_njgdr"]
+
+[sub_resource type="Environment" id="Environment_iipk8"]
+volumetric_fog_density = 0.1
+volumetric_fog_emission = Color(0.37111905, 0.37111905, 0.37111905, 1)
+volumetric_fog_detail_spread = 0.5
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_l0872"]
+emission_shape = 3
+emission_box_extents = Vector3(5, 1, 30)
+gravity = Vector3(0, -0.1, 0)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_njgdr"]
+noise_type = 3
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_l0872"]
+noise = SubResource("FastNoiseLite_njgdr")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l0872"]
+render_priority = 0
+shader = ExtResource("4_njgdr")
+shader_parameter/smoke_color = Color(1, 1, 1, 1)
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_l0872")
+shader_parameter/smoke_speed = 0.5
+shader_parameter/Density = 1.0
+shader_parameter/edge_fade_power = 2.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_aib4a"]
+material = SubResource("ShaderMaterial_l0872")
+size = Vector2(20, 20)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_aib4a"]
+emission_shape = 3
+emission_box_extents = Vector3(5, 1, 30)
+gravity = Vector3(0, -0.1, 0)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_njgdr"]
+emission_shape = 3
+emission_box_extents = Vector3(20, 1, 5)
+gravity = Vector3(0, -0.1, 0)
 
 [node name="BoardMap" type="Node3D" unique_id=359694223]
 
@@ -15,7 +56,7 @@ min_zoom = 3.0
 max_zoom = 11.0
 
 [node name="Sprite3D" type="Sprite3D" parent="." unique_id=1282704530]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0.0003504753, 0.0090518, -0.009581566)
 texture = ExtResource("2_njgdr")
 
 [node name="Regions" type="Node3D" parent="." unique_id=117390014]
@@ -26,7 +67,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 1.18
 [node name="TerritoryInfo" parent="Regions/Castle Black" unique_id=1018462692 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Castle Black"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Castle Black" unique_id=1834824262]
 
@@ -40,7 +80,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -1.2
 [node name="TerritoryInfo" parent="Regions/Winterfell" unique_id=2056329252 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Winterfell"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Winterfell" unique_id=685777540]
 
@@ -54,7 +93,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -5.5
 [node name="TerritoryInfo" parent="Regions/The Stony Shore" unique_id=1624689749 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "The Stony Shore"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/The Stony Shore" unique_id=1605693603]
 
@@ -68,7 +106,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 3.08
 [node name="TerritoryInfo" parent="Regions/White Harbor" unique_id=65253385 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "White Harbor"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/White Harbor" unique_id=340796898]
 
@@ -82,7 +119,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 4.85
 [node name="TerritoryInfo" parent="Regions/Widow\'s Watch" unique_id=1905971721 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Widow's Watch"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Widow\'s Watch" unique_id=750412860]
 
@@ -96,7 +132,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -5.4
 [node name="TerritoryInfo" parent="Regions/Flint\'s Finger" unique_id=133825077 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Flint's Finger"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Flint\'s Finger" unique_id=1656301130]
 
@@ -110,7 +145,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -2.8
 [node name="TerritoryInfo" parent="Regions/Greywater Watch" unique_id=2119669977 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Greywater Watch"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Greywater Watch" unique_id=1510283282]
 
@@ -124,7 +158,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.1
 [node name="TerritoryInfo" parent="Regions/Moat Cailin" unique_id=1881051127 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Moat Cailin"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Moat Cailin" unique_id=862668527]
 
@@ -138,7 +171,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -2.0
 [node name="TerritoryInfo" parent="Regions/Seagard" unique_id=568551563 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Seagard"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Seagard" unique_id=1108146888]
 
@@ -152,7 +184,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0.32
 [node name="TerritoryInfo" parent="Regions/The_Twins" unique_id=336423558 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "The_Twins"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/The_Twins" unique_id=13563874]
 
@@ -166,7 +197,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -1.1
 [node name="TerritoryInfo" parent="Regions/Riverrun" unique_id=1064815845 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Riverrun"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Riverrun" unique_id=1392679272]
 
@@ -180,7 +210,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -4.7
 [node name="TerritoryInfo" parent="Regions/Lannisport" unique_id=126432059 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Lannisport"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Lannisport" unique_id=48218564]
 
@@ -194,7 +223,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -4.8
 [node name="TerritoryInfo" parent="Regions/Searoad Marches" unique_id=1098423401 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Searoad Marches"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Searoad Marches" unique_id=2029613781]
 
@@ -208,7 +236,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -1.9
 [node name="TerritoryInfo" parent="Regions/Stoney Sept" unique_id=587386789 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Stoney Sept"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Stoney Sept" unique_id=753405185]
 
@@ -222,7 +249,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0.77
 [node name="TerritoryInfo" parent="Regions/Harrenhall" unique_id=1131454888 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Harrenhall"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Harrenhall" unique_id=1463080916]
 
@@ -236,7 +262,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.7
 [node name="TerritoryInfo" parent="Regions/Blackwater" unique_id=1421898708 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Blackwater"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Blackwater" unique_id=2086864387]
 
@@ -250,7 +275,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 4.55
 [node name="TerritoryInfo" parent="Regions/Cracklaw Point" unique_id=1414093664 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Cracklaw Point"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Cracklaw Point" unique_id=413962699]
 
@@ -264,7 +288,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 3.61
 [node name="TerritoryInfo" parent="Regions/King\'s Landing" unique_id=1859481975 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "King's Landing"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/King\'s Landing" unique_id=2034236695]
 
@@ -278,7 +301,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 5.53
 [node name="TerritoryInfo" parent="Regions/Kingswood" unique_id=276434897 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Kingswood"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Kingswood" unique_id=825073485]
 
@@ -292,7 +314,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 1.42
 [node name="TerritoryInfo" parent="Regions/The Boneway" unique_id=1002114931 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "The Boneway"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/The Boneway" unique_id=1495897473]
 
@@ -306,7 +327,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -4.5
 [node name="TerritoryInfo" parent="Regions/Highgarden" unique_id=2056511865 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Highgarden"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Highgarden" unique_id=1036458800]
 
@@ -320,7 +340,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.3
 [node name="TerritoryInfo" parent="Regions/The Reach" unique_id=176698906 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "The Reach"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/The Reach" unique_id=1533111100]
 
@@ -334,7 +353,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -5.2
 [node name="TerritoryInfo" parent="Regions/Oldtown" unique_id=1597131074 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Oldtown"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Oldtown" unique_id=863152983]
 
@@ -348,7 +366,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -1.5
 [node name="TerritoryInfo" parent="Regions/Dornish_Marches" unique_id=247785779 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Dornish_Marches"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Dornish_Marches" unique_id=1922974275]
 
@@ -362,7 +379,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -4.0
 [node name="TerritoryInfo" parent="Regions/Three Towers" unique_id=177652483 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Three Towers"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Three Towers" unique_id=528348482]
 
@@ -376,7 +392,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -1.5
 [node name="TerritoryInfo" parent="Regions/Prince\'s Pass" unique_id=918087036 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Prince's Pass"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Prince\'s Pass" unique_id=951685187]
 
@@ -390,7 +405,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 1.21
 [node name="TerritoryInfo" parent="Regions/Yronwood" unique_id=917914117 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Yronwood"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Yronwood" unique_id=1979038299]
 
@@ -404,7 +418,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -1.0
 [node name="TerritoryInfo" parent="Regions/Starfall" unique_id=1362981374 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Starfall"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Starfall" unique_id=1936778158]
 
@@ -418,7 +431,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 6.10
 [node name="TerritoryInfo" parent="Regions/Sunspear" unique_id=635326761 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Sunspear"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Sunspear" unique_id=1258721544]
 
@@ -432,7 +444,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 3.65
 [node name="TerritoryInfo" parent="Regions/Salt Shore" unique_id=130977662 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Salt Shore"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Salt Shore" unique_id=1546343602]
 
@@ -446,7 +457,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -4.3
 [node name="TerritoryInfo" parent="Regions/Bay of Ice" unique_id=986637086 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Bay of Ice"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Bay of Ice" unique_id=1012934535]
 
@@ -460,7 +470,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -7.5
 [node name="TerritoryInfo" parent="Regions/Sunset Sea" unique_id=521185426 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Sunset Sea"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Sunset Sea" unique_id=586732246]
 
@@ -474,7 +483,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -4.3
 [node name="TerritoryInfo" parent="Regions/Ironman\'s Bay" unique_id=1943662765 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Ironman's Bay"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Ironman\'s Bay" unique_id=893411233]
 
@@ -492,7 +500,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -5.1
 [node name="TerritoryInfo" parent="Regions/Pyke" unique_id=243547118 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Pyke"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Pyke" unique_id=1425966128]
 
@@ -506,7 +513,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -4.2
 [node name="TerritoryInfo" parent="Regions/West Summer Sea" unique_id=1907199247 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "West Summer Sea"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/West Summer Sea" unique_id=405276399]
 
@@ -520,7 +526,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -6.6
 [node name="TerritoryInfo" parent="Regions/The Arbor" unique_id=356023699 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "The Arbor"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/The Arbor" unique_id=1844930244]
 
@@ -534,7 +539,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -5.9
 [node name="TerritoryInfo" parent="Regions/Redwyne_Straits" unique_id=736415886 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Redwyne_Straits"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Redwyne_Straits" unique_id=1023164820]
 
@@ -548,7 +552,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 5.36
 [node name="TerritoryInfo" parent="Regions/East Summer Sea" unique_id=1121329978 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "East Summer Sea"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/East Summer Sea" unique_id=1490304915]
 
@@ -562,7 +565,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 5.74
 [node name="TerritoryInfo" parent="Regions/Storm\'s End" unique_id=1475751039 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Storm's End"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Storm\'s End" unique_id=1617317646]
 
@@ -576,7 +578,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 4.89
 [node name="TerritoryInfo" parent="Regions/Sea_of_Dorne" unique_id=1153322204 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Sea_of_Dorne"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Sea_of_Dorne" unique_id=727884466]
 
@@ -590,7 +591,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 4.96
 [node name="TerritoryInfo" parent="Regions/Blackwater Bay" unique_id=1113762059 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Blackwater Bay"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Blackwater Bay" unique_id=1703450290]
 
@@ -604,7 +604,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 6.94
 [node name="TerritoryInfo" parent="Regions/Shipbreaker Bay" unique_id=1215082494 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Shipbreaker Bay"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Shipbreaker Bay" unique_id=1645066685]
 
@@ -622,7 +621,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 7.37
 [node name="TerritoryInfo" parent="Regions/Dragonstone" unique_id=1195251743 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Dragonstone"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Dragonstone" unique_id=428471024]
 
@@ -636,7 +634,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 4.60
 [node name="TerritoryInfo" parent="Regions/The Fingers" unique_id=1214894261 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "The Fingers"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/The Fingers" unique_id=503115978]
 
@@ -650,7 +647,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 4.66
 [node name="TerritoryInfo" parent="Regions/The Mountains of the Moon" unique_id=391072997 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "The Mountains of the Moon"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/The Mountains of the Moon" unique_id=614852997]
 
@@ -664,7 +660,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 5.67
 [node name="TerritoryInfo" parent="Regions/The Eyrie" unique_id=744031333 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "The Eyrie"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/The Eyrie" unique_id=598104048]
 
@@ -678,7 +673,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 4.65
 [node name="TerritoryInfo" parent="Regions/The Narrow Sea" unique_id=975784489 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "The Narrow Sea"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/The Narrow Sea" unique_id=1266360505]
 
@@ -692,7 +686,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 6.08
 [node name="TerritoryInfo" parent="Regions/Karhold" unique_id=198873806 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Karhold"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Karhold" unique_id=162860571]
 
@@ -706,7 +699,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 5.57
 [node name="TerritoryInfo" parent="Regions/The Shivering Sea" unique_id=447259047 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "The Shivering Sea"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/The Shivering Sea" unique_id=2067545726]
 
@@ -720,7 +712,6 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -5.1
 [node name="TerritoryInfo" parent="Regions/The Golden Sound" unique_id=1992790965 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "The Golden Sound"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/The Golden Sound" unique_id=658109959]
 
@@ -734,10 +725,44 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -1.4
 [node name="TerritoryInfo" parent="Regions/Beyond the Wall" unique_id=2141914250 instance=ExtResource("3_l0872")]
 transform = Transform3D(1, 0, 0, 0, -1, -8.742278e-08, 0, 8.742278e-08, -1, 0, 0, -0.2)
 territory_name = "Beyond the Wall"
-territory_owner = "Sosun"
 
 [node name="Area3D" type="Area3D" parent="Regions/Beyond the Wall" unique_id=2093708646]
 
 [node name="CollisionPolygon3D" type="CollisionPolygon3D" parent="Regions/Beyond the Wall/Area3D" unique_id=502562141]
 depth = 0.1
 polygon = PackedVector2Array(6.36261, 0.3056, 6.33405, 0.30875, 6.30568, 0.29426, 6.22525, 0.22664, 6.16499, 0.19028, 6.09811, 0.1626, 6.06567, 0.1615, 6.03559, 0.17571, 6.01161, 0.2011, 5.98442, 0.30218, 5.98911, 0.5386, 5.98644, 0.58157, 5.97793, 0.62306, 5.95761, 0.6606, 5.92566, 0.68738, 5.84711, 0.7236, 5.77032, 0.76939, 5.70331, 0.83003, 5.58837, 0.95277, 5.49461, 1.0461, 5.23161, 1.0131, 4.9807, 0.96309, 4.85061, 0.9416, 4.71902, 0.93323, 4.58687, 0.93537, 4.06011, 0.9676, 3.82411, 0.9831, 3.51561, 1.0096, 3.44257, 0.9751, 3.36582, 0.94997, 3.28411, 0.9341, 3.13661, 0.9216, 3.0184, 0.90233, 2.95711, 0.8961, 2.86006, 0.90323, 2.76487, 0.92623, 2.56427, 0.99527, 2.46122, 1.03567, 2.28322, 1.12232, 2.24261, 1.1366, 2.09661, 1.1556, 2.07811, 1.1631, 2.07195, 1.17143, 2.06661, 1.1926, 2.04161, 1.3981, 2.03877, 1.40408, 2.02661, 1.4111, 1.9848, 1.42501, 1.94189, 1.43522, 1.85141, 1.44825, 1.82911, 1.4561, 1.81042, 1.47011, 1.79844, 1.48949, 1.79711, 1.5121, 1.8017, 1.55635, 1.79495, 1.6002, 1.77661, 1.6421, 1.73831, 1.68805, 1.64261, 1.7661, 1.57161, 1.8411, 1.42127, 1.81648, 1.26972, 1.80113, 1.11311, 1.7951, 0.98615, 1.7957, 0.86003, 1.78881, 0.73461, 1.7601, 0.65721, 1.7288, 0.61661, 1.7161, 0.54015, 1.70995, 0.46323, 1.72055, 0.30931, 1.7595, 0.2324, 1.77061, 0.15361, 1.7646, 0.09004, 1.736, 0.04786, 1.68678, 0.02211, 1.6176, 0.00135, 1.53982, -0.03027, 1.45859, -0.07739, 1.3911, -0.12852, 1.36522, -0.20591, 1.34521, -0.25389, 1.3656, -0.17941, 1.20679, -0.05192, 1.10013, 0.11461, 1.0236, 0.18404, 0.99707, 0.24911, 0.96323, 0.30111, 0.9116, 0.32652, 0.84122, 0.32516, 0.76446, 0.30611, 0.6861, 0.29538, 0.6688, 0.27852, 0.65642, 0.25861, 0.6471, -0.03152, 0.57211, -0.3344, 0.55818, -0.64839, 0.5766, -0.70077, 0.5816, -0.7523, 0.59157, -0.80189, 0.6116, -0.8624, 0.72329, -0.87145, 0.84946, -0.98039, 0.9036, -1.07172, 0.91367, -1.14607, 0.95688, -1.20389, 1.0331, -1.22884, 1.08972, -1.26839, 1.2096, -1.30375, 1.29322, -1.39739, 1.4526, -1.52312, 1.50844, -1.6368, 1.58598, -1.73789, 1.6856, -1.81217, 1.79012, -1.88892, 1.88458, -2.00739, 1.9411, -2.1464, 1.95311, -2.21689, 1.9656, -2.28051, 1.99677, -2.32751, 2.04749, -2.34239, 2.1136, -2.33589, 2.1556, -2.34156, 2.18315, -2.35705, 2.20671, -2.38089, 2.2226, -2.50705, 2.24777, -2.63476, 2.23066, -2.75339, 2.1711, -2.7917, 2.13885, -2.86489, 2.0681, -2.92753, 2.01503, -2.99389, 1.96677, -3.06489, 1.9206, -3.13472, 1.88286, -3.16039, 1.8581, -3.16364, 1.82737, -3.15873, 1.794, -3.16589, 1.7606, -3.18251, 1.7437, -3.22689, 1.7206, -3.24641, 1.70459, -3.25793, 1.68342, -3.25439, 1.6611, -3.30574, 1.63077, -3.36302, 1.60914, -3.41139, 1.5741, -3.43639, 1.5386, -3.47409, 1.5206, -3.51916, 1.52362, -3.5821, 1.54047, -3.59039, 1.5391, -3.60303, 1.52934, -3.66931, 1.41559, -3.7174, 1.30158, -3.75689, 1.1801, -3.77482, 1.11368, -3.78683, 1.04639, -3.78639, 0.9766, -3.77278, 0.90704, -3.76889, 0.8711, -3.77426, 0.82632, -3.78936, 0.78349, -3.81189, 0.7421, -3.89562, 0.64551, -4.00462, 0.58154, -4.13139, 0.5656, -4.17008, 0.57243, -4.24739, 0.5936, -4.333, 0.60844, -4.50939, 0.6216, -4.80002, 0.66561, -5.02252, 0.70863, -5.09539, 0.72698, -5.19578, 0.76081, -5.22333, 0.76676, -5.25139, 0.7636, -5.27164, 0.7513, -5.28655, 0.73232, -5.29589, 0.7091, -5.30018, 0.68541, -5.30335, 0.58007, -5.30923, 0.52415, -5.33191, 0.41168, -5.36089, 0.2996, -5.38478, 0.22947, -5.40239, 0.1956, -5.42546, 0.16642, -5.45442, 0.14342, -5.48939, 0.1296, -5.54386, 0.12208, -5.59876, 0.12208, -5.65489, 0.1296, -5.8325, 0.18725, -5.92589, 0.2041, -5.91567, 0.12395, -5.91439, 0.0831, -5.93004, 0.02292, -5.93439, -0.0084, -5.92516, -0.03857, -5.90412, -0.06351, -5.81949, -0.1176, -5.79589, -0.1409, -5.77987, -0.17663, -5.77598, -0.2163, -5.79342, -0.33919, -5.80189, -0.3794, -5.85439, -0.4774, -5.85865, -0.50319, -5.85943, -0.60825, -5.86351, -0.65919, -5.87689, -0.7094, -5.84874, -0.72307, -5.82634, -0.74536, -5.81189, -0.7744, -5.80239, -0.8054, -5.79192, -0.8181, -5.75282, -0.85043, -5.71641, -0.86954, -5.67639, -0.8719, -5.65039, -0.8639, -5.61642, -0.86664, -5.5856, -0.88458, -5.55839, -0.9109, -5.49927, -0.98709, -5.46188, -1.04956, -5.4525, -1.0706, -5.44346, -1.10937, -5.44221, -1.19815, -5.44555, -1.25547, -5.46639, -1.3054, -5.48519, -1.32992, -5.50034, -1.3564, -5.50789, -1.3864, -5.49989, -1.4484, -5.50659, -1.49869, -5.53058, -1.54475, -5.59411, -1.61609, -5.6202, -1.65435, -5.66798, -1.76328, -5.72935, -1.86619, -5.77389, -1.9969, -5.79858, -2.04639, -5.80539, -2.0734, -5.80428, -2.09603, -5.78321, -2.18592, -5.7798, -2.23232, -5.78289, -2.2789, -5.78289, -2.4244, 1.05211, -2.4244, 1.05061, -2.1929, 1.07984, -2.19726, 1.10755, -2.20883, 1.13361, -2.2259, 1.20411, -2.2834, 1.21862, -2.29036, 1.22661, -2.2909, 1.23575, -2.28727, 1.29735, -2.23401, 1.35429, -2.21013, 1.41711, -2.1964, 1.53029, -2.18626, 1.64383, -2.1905, 1.75911, -2.2099, 1.80145, -2.22212, 1.84046, -2.24106, 1.87261, -2.2709, 1.89642, -2.30712, 1.91261, -2.3219, 1.93727, -2.32968, 2.00211, -2.3369, 2.02479, -2.33242, 2.04388, -2.31753, 2.08586, -2.25578, 2.10511, -2.2409, 2.13192, -2.20517, 2.21761, -2.1594, 2.30069, -2.07122, 2.35388, -1.95396, 2.41661, -1.8369, 2.49875, -1.7644, 2.60148, -1.72188, 2.71611, -1.7059, 2.82727, -1.71162, 3.09011, -1.7569, 3.07132, -1.6819, 3.0742, -1.60456, 3.09961, -1.5289, 3.17042, -1.49464, 3.24734, -1.47961, 3.31911, -1.4994, 3.36497, -1.54147, 3.39111, -1.5584, 3.4344, -1.56097, 3.47481, -1.54069, 3.50661, -1.5049, 3.52624, -1.4638, 3.55811, -1.3764, 3.5826, -1.33677, 3.61703, -1.30685, 3.66061, -1.2954, 3.7111, -1.31446, 3.7471, -1.35959, 3.78463, -1.45527, 3.80011, -1.4679, 3.82897, -1.46597, 3.85273, -1.44356, 3.86961, -1.4119, 3.93111, -1.2554, 3.94594, -1.22917, 3.96712, -1.21076, 3.99161, -1.2124, 4.00459, -1.22995, 4.01399, -1.25044, 4.02961, -1.2629, 4.04637, -1.25844, 4.06911, -1.2234, 4.10645, -1.18748, 4.15882, -1.17093, 4.21711, -1.1649, 4.23504, -1.15854, 4.28343, -1.13686, 4.35661, -1.0944, 4.41809, -1.03823, 4.46598, -0.95996, 4.6191, -0.63955, 4.69357, -0.49669, 4.76161, -0.3949, 4.85076, -0.28604, 4.88811, -0.2179, 4.91761, -0.13226, 4.93471, -0.07204, 4.96111, -0.0424, 4.99459, -0.04409, 5.044, -0.076, 5.16651, -0.20841, 5.22118, -0.24686, 5.28561, -0.2594, 5.37532, -0.23861, 5.41811, -0.2459, 5.48086, -0.29116, 5.53317, -0.3482, 5.59502, -0.453, 5.62315, -0.4798, 5.65661, -0.4799, 5.65323, -0.40176, 5.67842, -0.32755, 5.73061, -0.2659, 5.80029, -0.2308, 5.87825, -0.22324, 5.95561, -0.2454, 5.99038, -0.28022, 6.00722, -0.3294, 6.01311, -0.3844, 6.03311, -0.7889, 6.0352, -0.80973, 6.0413, -0.82918, 6.05461, -0.8439, 6.1207, -0.85672, 6.18564, -0.82922, 6.23461, -0.7734, 6.25747, -0.70668, 6.26554, -0.63546, 6.26761, -0.5609, 6.27823, -0.4212, 6.30203, -0.28311, 6.34011, -0.1439, 6.36442, 0.00101, 6.36561, 0.3051)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=120918067]
+environment = SubResource("Environment_iipk8")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="." unique_id=199094583]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.95511, 1.8090401, 0)
+amount = 100
+lifetime = 5.0
+visibility_aabb = AABB(10, 0, -15, 15, 8, 30)
+process_material = SubResource("ParticleProcessMaterial_l0872")
+draw_pass_1 = SubResource("QuadMesh_aib4a")
+
+[node name="GPUParticles3D2" type="GPUParticles3D" parent="." unique_id=1255981480]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.133268, 1.8090401, 0)
+amount = 100
+lifetime = 5.0
+visibility_aabb = AABB(-30, 0, -15, 15, 8, 30)
+process_material = SubResource("ParticleProcessMaterial_aib4a")
+draw_pass_1 = SubResource("QuadMesh_aib4a")
+
+[node name="GPUParticles3D3" type="GPUParticles3D" parent="." unique_id=1119795912]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.021432877, 1.8090401, 25.73639)
+amount = 100
+lifetime = 5.0
+visibility_aabb = AABB(-15, 0, -30, 30, 8, 30)
+process_material = SubResource("ParticleProcessMaterial_njgdr")
+draw_pass_1 = SubResource("QuadMesh_aib4a")
+
+[node name="GPUParticles3D4" type="GPUParticles3D" parent="." unique_id=898154265]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.021432877, 1.8090401, -32.97386)
+amount = 100
+lifetime = 5.0
+visibility_aabb = AABB(-15, 0, 0, 30, 8, 40)
+process_material = SubResource("ParticleProcessMaterial_njgdr")
+draw_pass_1 = SubResource("QuadMesh_aib4a")
