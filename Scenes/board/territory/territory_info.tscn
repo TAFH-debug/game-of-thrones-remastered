@@ -5,7 +5,7 @@
 [ext_resource type="FontFile" uid="uid://hkjpfk5sciuf" path="res://assets/fonts/Romic Std Bold.otf" id="3_bte8o"]
 [ext_resource type="Texture2D" uid="uid://6juu52pmgo8y" path="res://assets/sprites/map/icon_supply_info.png" id="4_uhk6r"]
 [ext_resource type="Texture2D" uid="uid://bo04iwhqcr6h6" path="res://assets/sprites/map/icon_crown_small.png" id="5_bn4hx"]
-[ext_resource type="Texture2D" uid="uid://di0ua4lrpt7iy" path="res://assets/sprites/map/atlas_House-Icons.png" id="6_feba0"]
+[ext_resource type="Texture2D" uid="uid://di0ua4lrpt7iy" path="res://assets/sprites/map/atlas_house-icons.png" id="6_feba0"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rngku"]
 content_margin_left = 47.0
@@ -66,11 +66,13 @@ theme_override_constants/margin_right = 8
 [node name="NameLabel" type="Label" parent="SubViewport/MarginContainer/Panel/HBox/MarginContainer" unique_id=1525620212]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Riverrun"
+text = "Pizdes
+"
 label_settings = SubResource("LabelSettings_rb0yy")
 max_lines_visible = 1
 
 [node name="Supply" type="MarginContainer" parent="SubViewport/MarginContainer/Panel/HBox" unique_id=452950298]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_right = 12
@@ -82,6 +84,7 @@ expand_mode = 3
 stretch_mode = 3
 
 [node name="Supply2" type="MarginContainer" parent="SubViewport/MarginContainer/Panel/HBox" unique_id=424977088]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_right = 12
@@ -93,6 +96,7 @@ expand_mode = 3
 stretch_mode = 3
 
 [node name="Crown" type="MarginContainer" parent="SubViewport/MarginContainer/Panel/HBox" unique_id=2131110661]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_right = 12
@@ -104,6 +108,7 @@ expand_mode = 3
 stretch_mode = 3
 
 [node name="Crown2" type="MarginContainer" parent="SubViewport/MarginContainer/Panel/HBox" unique_id=388831596]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_right = 12
@@ -121,7 +126,7 @@ texture = SubResource("AtlasTexture_4au83")
 
 [node name="Sprite3D" type="Sprite3D" parent="." unique_id=370995599]
 offset = Vector2(209, 0)
-pixel_size = 0.0008
+pixel_size = 0.001
 billboard = 1
 double_sided = false
 fixed_size = true
