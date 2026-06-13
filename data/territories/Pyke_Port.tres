@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="TerritoryDataResource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/territory_data_resource.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+territory_name = "Pyke Port"
+territory_id = &"PyP"
+area_type = 2
+fortification = 0
+supply_count = 0
+power_count = 0
+is_home_area = false
+initial_neutral_force_strength = 0
+adjacent_lands = Array[StringName]([&"Pyk"])
+adjacent_seas = Array[StringName]([&"ImB"])
+connected_port = &""
+connected_land = &"Pyk"
+world_x = -5.10874
+world_z = -4.450639
+polygons = Array[PackedVector2Array]([])

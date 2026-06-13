@@ -1,12 +1,13 @@
 extends Node
 class_name GameServer
 
-enum Stage { PLANNING, WESTEROS, BATTLING, BIDDING, MUSTERING, ACTION }
+enum Stage { PLANNING, ACTION, BATTLING, BIDDING, MUSTERING, WESTEROS }
 var stage: Stage = Stage.PLANNING
 var players: Array[GamePlayerData] = []
 var influence_tracks: Array[InfluenceTrack] = []
 var orders: Array[Order] = []
 var battling_players: Array[GamePlayerData] = []
+var territories: Array[GameTerritory] = []
 
 func start_game(players_data: Array[PlayerData]):
 	if players_data.size() > 6:
@@ -20,6 +21,9 @@ func start_game(players_data: Array[PlayerData]):
 		player.supply = 0
 		player.house = Enums.House.get(i)
 		players.append(player)
+		
+	for i in TerritoryDB.all():
+		territories.append(GameTerritory.new(i))
 
 func get_player(id: int):
 	var player_idx = players.find_custom(func(x): x.id == id)
@@ -50,7 +54,7 @@ func place_orders(orders_data: Array[Dictionary]):
 		new_order.owner = player
 		orders.append(new_order)
 		
-@rpc("any_peer")
+@rpc("any_peer", "call_local")
 func resolve_order(territory_name: String, params: Dictionary):
 	if not multiplayer.is_server():
 		return
@@ -63,12 +67,13 @@ func resolve_order(territory_name: String, params: Dictionary):
 				return
 			if order.type.is_valid(order, params):
 				order.type.execute(order, params)
+				orders.erase(order)
 			break
 			
-@rpc("any_peer")
+@rpc("any_peer", "call_local")
 func submit_card(card_id: int):
 	pass
 	
-@rpc("any_peer")
+@rpc("any_peer", "call_local")
 func submit_bid(amount: int):
 	pass

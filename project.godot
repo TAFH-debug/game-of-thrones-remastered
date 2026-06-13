@@ -23,6 +23,7 @@ config/icon="res://icon.svg"
 
 PlayerSettings="*uid://g0bo4mi4tlvu"
 Multiplayer="*uid://tecqssu8l85r"
+TerritoryDB="*uid://1mi5504knc30"
 
 [display]
 

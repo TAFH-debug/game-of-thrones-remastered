@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="TerritoryDataResource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/territory_data_resource.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+territory_name = "Oldtown Port"
+territory_id = &"OlP"
+area_type = 2
+fortification = 0
+supply_count = 0
+power_count = 0
+is_home_area = false
+initial_neutral_force_strength = 0
+adjacent_lands = Array[StringName]([&"Old"])
+adjacent_seas = Array[StringName]([&"RwS"])
+connected_port = &""
+connected_land = &"Old"
+world_x = -5.229979
+world_z = 7.879419
+polygons = Array[PackedVector2Array]([])

@@ -574,7 +574,7 @@ environment = SubResource("Environment_exf0g")
 [node name="BoardFog" parent="WorldEnvironment" unique_id=1171274871 instance=ExtResource("3_ci4ar")]
 
 [node name="DragCamera" parent="." unique_id=1663257898 instance=ExtResource("1_knosr")]
-transform = Transform3D(1, 0, 0, 0, 0.17364822, 0.9848077, 0, -0.9848077, 0.17364822, 0, 5, 0)
+transform = Transform3D(1, 0, 0, 0, 0.17364821, 0.98480767, 0, -0.98480767, 0.17364821, 0, 5, 0)
 
 [node name="BoardSprite" type="Sprite3D" parent="." unique_id=1641006706]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)

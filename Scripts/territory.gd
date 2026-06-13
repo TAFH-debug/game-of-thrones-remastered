@@ -1,5 +1,4 @@
 extends Area3D
-class_name Territory
 
 @export var adjacent: Array[Node3D]
 var active = false

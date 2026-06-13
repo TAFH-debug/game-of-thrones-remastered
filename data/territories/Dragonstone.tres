@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="TerritoryDataResource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/territory_data_resource.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+territory_name = "Dragonstone"
+territory_id = &"DrS"
+area_type = 0
+fortification = 2
+supply_count = 1
+power_count = 1
+is_home_area = true
+initial_neutral_force_strength = 0
+adjacent_lands = Array[StringName]([])
+adjacent_seas = Array[StringName]([&"ShB"])
+connected_port = &"DrP"
+connected_land = &""
+world_x = 7.376462
+world_z = -0.754657
+polygons = Array[PackedVector2Array]([PackedVector2Array(2.43854, -1.26534, 2.43854, 1.98966, 0.96654, 1.98966, -0.54146, 0.03516, -0.60493, -0.02577, -0.62946, -0.06234, -0.63349, -0.08391, -0.62946, -0.09384, -0.61896, -0.10084, -0.5576, -0.11796, -0.49358, -0.12643, -0.42996, -0.14284, -0.34017, -0.19746, -0.29146, -0.21834, -0.26072, -0.22182, -0.19696, -0.21634, 0.57504, -1.26584, 2.43704, -1.26584)])
