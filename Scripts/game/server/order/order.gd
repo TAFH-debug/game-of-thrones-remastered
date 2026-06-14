@@ -3,3 +3,4 @@ class_name Order
 var territory: String
 var type: OrderType
 var owner: GamePlayerData
+var resolved: bool = false

@@ -4,6 +4,7 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_qw0ux"]
 font = ExtResource("1_pqnoq")
+font_size = 24
 font_color = Color(0, 0, 0, 1)
 
 [node name="MessageScene" type="HBoxContainer" unique_id=156790314]

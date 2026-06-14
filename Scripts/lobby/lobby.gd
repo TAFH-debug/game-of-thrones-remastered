@@ -79,6 +79,16 @@ func set_ready(ready: bool):
 	var player = players[player_idx]
 	player.ready = ready
 	player_ready.rpc(id, ready)
+	_check_all_ready()
+
+func _check_all_ready() -> void:
+	if players.size() < 2:
+		return
+	for p: PlayerData in players:
+		if not p.ready:
+			return
+	state = States.INGAME
+	Multiplayer.game.start_game(players)
 
 @rpc("authority")
 func players_connected(players_arr: Array[Dictionary]):

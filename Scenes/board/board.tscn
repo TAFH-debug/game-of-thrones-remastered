@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://d344ag3n317wf"]
 
+[ext_resource type="PackedScene" uid="uid://db2d0mvognhvb" path="res://scenes/pause_menu.tscn" id="1_ci4ar"]
 [ext_resource type="PackedScene" uid="uid://bltfbd4fhsro6" path="res://scenes/systems/camera/drag_camera.tscn" id="1_knosr"]
 [ext_resource type="Texture2D" uid="uid://dq5tvy3nesbm4" path="res://assets/sprites/map/MapStdRes.webp" id="2_q07he"]
 [ext_resource type="PackedScene" uid="uid://dl1euj66nmiqi" path="res://scenes/board/board_fog.tscn" id="3_ci4ar"]
@@ -567,6 +568,8 @@ adjacent_lands = Array[StringName]([&"TBw", &"PrP", &"Sfl", &"SaS", &"Ssp"])
 adjacent_seas = Array[StringName]([&"SoD"])
 
 [node name="Board" type="Node3D" unique_id=998348962]
+
+[node name="PauseMenu" parent="." unique_id=1487128104 instance=ExtResource("1_ci4ar")]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1354509951]
 environment = SubResource("Environment_exf0g")

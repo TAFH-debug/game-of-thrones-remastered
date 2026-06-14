@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://db2d0mvognhvb"]
+
+[ext_resource type="Script" uid="uid://dqgikfiot8hcv" path="res://scenes/pause_menu.gd" id="1_kukqi"]
+[ext_resource type="Script" uid="uid://bdowh6pf666g7" path="res://scripts/pause_menu/exit_button.gd" id="1_n87rw"]
+[ext_resource type="Script" uid="uid://c6qru8vt2uue8" path="res://scripts/pause_menu/resume_button.gd" id="2_myx47"]
+
+[node name="PauseMenu" type="CanvasLayer" unique_id=1816456544]
+script = ExtResource("1_kukqi")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1343300266]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=75065936]
+top_level = true
+layout_mode = 2
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=1326575851]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer3" unique_id=231645708]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer3/VBoxContainer" unique_id=1131761516]
+layout_mode = 2
+text = "Game of Thrones: Remastered"
+
+[node name="Exit" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer3/VBoxContainer" unique_id=1256411060]
+layout_mode = 2
+text = "Exit"
+script = ExtResource("1_n87rw")
+
+[node name="Resume" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer3/VBoxContainer" unique_id=971384630]
+layout_mode = 2
+text = "Resume"
+script = ExtResource("2_myx47")
