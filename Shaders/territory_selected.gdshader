@@ -1,17 +1,18 @@
 shader_type spatial;
+render_mode blend_add, depth_draw_never, cull_disabled, unshaded;
 
-uniform sampler2D sprite_texture : source_color, filter_nearest;
+uniform vec4 highlight_color : source_color = vec4(0.133, 0.227, 0.643, 0.4);
+uniform float pulse_speed : hint_range(0.0, 5.0) = 1.5;
+
 uniform bool active = false;
-
 void fragment() {
 	if (!active) {
-		vec4 color = texture(sprite_texture, UV);
-		ALBEDO = color.rgb;
-		ALPHA = color.a;
+		ALBEDO = vec3(0.0);
+		ALPHA = 0.0; 
 	}
 	else {
-		vec4 color = texture(sprite_texture, UV);
-		ALBEDO = UV.xyx;
-		ALPHA = color.a;
+	    float pulse = sin(TIME * pulse_speed) * 0.15 + 0.85;
+	    ALBEDO = highlight_color.rgb;
+	    ALPHA  = highlight_color.a;
 	}
 }
