@@ -5,7 +5,7 @@ extends Node3D
 @export var territory_name: String
 @export var supply_count: int = 0
 @export var power_count: int = 0
-@export var data: TerritoryData:
+@export var data: TerritoryDataResource:
 	set(value):
 		data = value
 		if not is_node_ready():

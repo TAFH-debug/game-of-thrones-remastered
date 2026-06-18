@@ -5,6 +5,7 @@ const BOARD_PNG = "res://assets/sprites/map/MapStdRes.webp"
 const SCENE_OUT = "res://scenes/board/board.tscn"
 const MESH_OUT_DIR = "res://assets/meshes/territories/"
 
+const PAUSE_SCENE = preload("res://scenes/pause_menu.tscn")
 const FOG_SCENE = preload("res://scenes/board/board_fog.tscn")
 const TERRITORY_SCENE = preload("res://scenes/board/territory/territory.tscn")
 const CAMERA_SCENE = preload("res://scenes/systems/camera/drag_camera.tscn")
@@ -22,6 +23,10 @@ func _run():
 
 	var root := Node3D.new()
 	root.name = "Board"
+	
+	var pause_menu = PAUSE_SCENE.instantiate(PackedScene.GEN_EDIT_STATE_INSTANCE)
+	root.add_child(pause_menu)
+	pause_menu.owner = root
 	
 	var world_env = WorldEnvironment.new()
 	world_env.name = "WorldEnvironment"
@@ -90,26 +95,33 @@ func _run():
 		
 		var entry: Dictionary = data[display_name]
 		
+		var tres_name: String = str(display_name).replace("'s ", "_s_").replace(" ", "_")
+		var tres_path: String = "res://data/territories/" + tres_name + ".tres"
+		var td: TerritoryDataResource = load(tres_path)
+		if td == null:
+			push_warning("TerritoryDataResource not found: " + tres_path)
+			continue
+			
 		#var territory := Node3D.new()
 		var territory = TERRITORY_SCENE.instantiate(PackedScene.GEN_EDIT_STATE_INSTANCE)
 		territory.name = str(display_name).replace("'","").to_pascal_case()
-		territory.position = Vector3(entry.world_x, 0.0, entry.world_z)
+		territory.position = Vector3(td.world_x, 0.0, td.world_z)
 		#territory.rotation_degrees.x = 90.0
 		
-		var td := TerritoryData.new()
-		td.territory_name = str(display_name).replace("_", " ")
-		td.territory_id = entry.territory_id
-		td.area_type = entry.area_type
-		td.fortification = entry.fortification
-		td.supply_count = entry.supply_count
-		td.power_count = entry.power_count
-		td.is_home_area = entry.is_home_area
-		td.initial_neutral_force_strength = entry.initial_neutral_force_strength
-		td.adjacent_lands.assign(entry.adjacent_lands)
-		td.adjacent_seas.assign(entry.adjacent_seas)
-		td.connected_port = entry.connected_port
-		td.connected_land = entry.connected_land
-		
+		#var td := TerritoryData.new()
+		#td.territory_name = str(display_name).replace("_", " ")
+		#td.territory_id = entry.territory_id
+		#td.area_type = entry.area_type
+		#td.fortification = entry.fortification
+		#td.supply_count = entry.supply_count
+		#td.power_count = entry.power_count
+		#td.is_home_area = entry.is_home_area
+		#td.initial_neutral_force_strength = entry.initial_neutral_force_strength
+		#td.adjacent_lands.assign(entry.adjacent_lands)
+		#td.adjacent_seas.assign(entry.adjacent_seas)
+		#td.connected_port = entry.connected_port
+		#td.connected_land = entry.connected_land
+
 		territory.data = td
 		territories_node.add_child(territory)
 		territory.owner = root
@@ -120,7 +132,7 @@ func _run():
 		area.owner = root
 		
 		var polygons: Array = entry.polygons
-		if entry.area_type != TerritoryData.AreaType.PORT:
+		if td.area_type != TerritoryDataResource.AreaType.PORT:
 			for i in polygons.size():
 				if polygons[i].is_empty():
 					push_warning("Empty polygon for: " + display_name)
@@ -146,7 +158,7 @@ func _run():
 		var st: SurfaceTool = SurfaceTool.new()
 		st.begin(Mesh.PRIMITIVE_TRIANGLES)
 		var mesh_built := false
-		if entry.area_type == TerritoryData.AreaType.PORT:
+		if td.area_type == TerritoryDataResource.AreaType.PORT:
 			_build_circle_mesh(st)
 			mesh_built = true
 		else:
@@ -161,25 +173,15 @@ func _run():
 			var mesh_path: String = MESH_OUT_DIR + territory.name + "_highlight.res"
 			ResourceSaver.save(committed_mesh, mesh_path)
 			mesh_inst.mesh = load(mesh_path)
-			#mesh_inst.visible = false
 			
-			var hover_mat: ShaderMaterial = ShaderMaterial.new()
-			hover_mat.shader = load("res://shaders/territory_hover.gdshader")
-			hover_mat.set_shader_parameter("noise_texture", _make_noise_texture())
-			
-			var selected_mat: ShaderMaterial = ShaderMaterial.new()
-			selected_mat.shader = load("res://shaders/territory_selected.gdshader")
-
-			# Chain them: hover renders first, selected renders as a second pass on top
-			hover_mat.next_pass = selected_mat
-
-			mesh_inst.material_override = hover_mat
-			#mesh_inst.transparency = 1
+			mesh_inst.visible = false
+			var mat: ShaderMaterial = ShaderMaterial.new()
+			mat.shader = load("res://shaders/territory_selected.gdshader")
+			mat.render_priority = 1
+			mesh_inst.material_override = mat
 			area.add_child(mesh_inst)
 			mesh_inst.owner = root
-		
 		built += 1
-
 	var scene := PackedScene.new()
 	scene.pack(root)
 	ResourceSaver.save(scene, SCENE_OUT)
@@ -205,8 +207,6 @@ func _build_highlight_mesh(polygons: Array, st: SurfaceTool, y_offset: float = 0
 	for poly in polygons:
 		if poly.size() < 3:
 			continue
-		#print("%s polygon (%d verts)" % ["convex" if _is_convex(poly) else "concave", poly.size()])
-		
 		var tris: PackedInt32Array = Geometry2D.triangulate_polygon(poly)
 		
 		if not tris.is_empty():
@@ -224,7 +224,12 @@ func _build_highlight_mesh(polygons: Array, st: SurfaceTool, y_offset: float = 0
 	
 	return any_success
 
-func _add_flat_vertex(st: SurfaceTool, v: Vector2, uv_min: Vector2, uv_range: Vector2, y: float) -> void:
+func _add_flat_vertex(
+	st: SurfaceTool, 
+	v: Vector2, 
+	uv_min: Vector2, 
+	uv_range: Vector2, 
+	y: float) -> void:
 	# UV mapped to [0,1] across the polygon's bounding box
 	st.set_uv(Vector2((v.x - uv_min.x) / uv_range.x, (v.y - uv_min.y) / uv_range.y))
 	st.set_normal(Vector3(0.0, 1.0, 0.0))
@@ -238,7 +243,7 @@ func _triangulate_via_decomposition(
 	uv_min: Vector2, 
 	uv_range: Vector2,
 	) -> bool:
-	print("triangulate_polygon failed, falling back to decomposition for %d-vert polygon" % poly.size())
+	print("triangulate_polygon failed, using decomposition for %d-vert polygon" % poly.size())
 	var convex_parts: Array = Geometry2D.decompose_polygon_in_convex(poly)
 	
 	if convex_parts.is_empty():
@@ -256,7 +261,12 @@ func _triangulate_via_decomposition(
 	
 	return added_any
 
-func _build_circle_mesh(st: SurfaceTool, radius := 0.5, segments := 16, y_offset := 0.05) -> void:
+func _build_circle_mesh(
+	st: SurfaceTool,
+	radius := 0.5,
+	segments := 16,
+	y_offset := 0.05
+	) -> void:
 	st.set_smooth_group(0)
 	var angle_step: float = 2 * PI / segments
 	for i in segments:
@@ -291,14 +301,3 @@ func _is_convex(poly: PackedVector2Array) -> bool:
 			elif sign != s:
 				return false
 	return true
-
-func _make_noise_texture() -> NoiseTexture2D:
-	var noise_tex := NoiseTexture2D.new()
-	var noise := FastNoiseLite.new()
-	noise.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
-	noise.frequency = 0.08
-	noise_tex.noise = noise
-	noise_tex.width = 256
-	noise_tex.height = 256
-	noise_tex.seamless = true
-	return noise_tex
