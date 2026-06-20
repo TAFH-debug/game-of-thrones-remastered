@@ -122,6 +122,7 @@
 [ext_resource type="Resource" path="res://data/territories/Winterfell.tres" id="102_re7a0"]
 [ext_resource type="Resource" path="res://data/territories/Winterfell_Port.tres" id="104_0lchu"]
 [ext_resource type="Resource" path="res://data/territories/Yronwood.tres" id="106_0duqv"]
+[ext_resource type="PackedScene" uid="uid://dtq00pp48lbks" path="res://scenes/game_ui.tscn" id="123_mwsqg"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vtpgt"]
 sky_top_color = Color(1, 1, 1, 1)
@@ -159,6 +160,7 @@ shader_parameter/pulse_speed = 1.5
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yup3t"]
 render_priority = 1
+next_pass = SubResource("ShaderMaterial_7jp3g")
 shader = ExtResource("6_ci4ar")
 shader_parameter/highlight_color = Color(0.133, 0.227, 0.643, 0.4)
 shader_parameter/pulse_speed = 1.5
@@ -186,6 +188,7 @@ height = 0.1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_f5jn4"]
 render_priority = 1
+next_pass = SubResource("ShaderMaterial_ucxnx")
 shader = ExtResource("6_ci4ar")
 shader_parameter/highlight_color = Color(0.133, 0.227, 0.643, 0.4)
 shader_parameter/pulse_speed = 1.5
@@ -216,6 +219,7 @@ shader_parameter/pulse_speed = 1.5
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3hi31"]
 render_priority = 1
+next_pass = SubResource("ShaderMaterial_m02ch")
 shader = ExtResource("6_ci4ar")
 shader_parameter/highlight_color = Color(0.133, 0.227, 0.643, 0.4)
 shader_parameter/pulse_speed = 1.5
@@ -246,6 +250,7 @@ shader_parameter/pulse_speed = 1.5
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0xsy0"]
 render_priority = 1
+next_pass = SubResource("ShaderMaterial_e6gr6")
 shader = ExtResource("6_ci4ar")
 shader_parameter/highlight_color = Color(0.133, 0.227, 0.643, 0.4)
 shader_parameter/pulse_speed = 1.5
@@ -297,6 +302,7 @@ height = 0.1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_h3g4v"]
 render_priority = 1
+next_pass = SubResource("ShaderMaterial_gilct")
 shader = ExtResource("6_ci4ar")
 shader_parameter/highlight_color = Color(0.133, 0.227, 0.643, 0.4)
 shader_parameter/pulse_speed = 1.5
@@ -327,6 +333,7 @@ shader_parameter/pulse_speed = 1.5
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_nmw31"]
 render_priority = 1
+next_pass = SubResource("ShaderMaterial_0lchu")
 shader = ExtResource("6_ci4ar")
 shader_parameter/highlight_color = Color(0.133, 0.227, 0.643, 0.4)
 shader_parameter/pulse_speed = 1.5
@@ -387,6 +394,7 @@ height = 0.1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mesae"]
 render_priority = 1
+next_pass = SubResource("ShaderMaterial_3xod1")
 shader = ExtResource("6_ci4ar")
 shader_parameter/highlight_color = Color(0.133, 0.227, 0.643, 0.4)
 shader_parameter/pulse_speed = 1.5
@@ -417,6 +425,7 @@ shader_parameter/pulse_speed = 1.5
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3u8bq"]
 render_priority = 1
+next_pass = SubResource("ShaderMaterial_4oitl")
 shader = ExtResource("6_ci4ar")
 shader_parameter/highlight_color = Color(0.133, 0.227, 0.643, 0.4)
 shader_parameter/pulse_speed = 1.5
@@ -453,6 +462,7 @@ shader_parameter/pulse_speed = 1.5
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_f5op6"]
 render_priority = 1
+next_pass = SubResource("ShaderMaterial_f38ra")
 shader = ExtResource("6_ci4ar")
 shader_parameter/highlight_color = Color(0.133, 0.227, 0.643, 0.4)
 shader_parameter/pulse_speed = 1.5
@@ -480,6 +490,7 @@ height = 0.1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_24efd"]
 render_priority = 1
+next_pass = SubResource("ShaderMaterial_7vm3a")
 shader = ExtResource("6_ci4ar")
 shader_parameter/highlight_color = Color(0.133, 0.227, 0.643, 0.4)
 shader_parameter/pulse_speed = 1.5
@@ -507,6 +518,7 @@ shader_parameter/pulse_speed = 1.5
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1p4jq"]
 render_priority = 1
+next_pass = SubResource("ShaderMaterial_v0ql8")
 shader = ExtResource("6_ci4ar")
 shader_parameter/highlight_color = Color(0.133, 0.227, 0.643, 0.4)
 shader_parameter/pulse_speed = 1.5
@@ -1465,3 +1477,7 @@ polygon = PackedVector2Array(2.0226, -0.23051, 1.98801, -0.18721, 1.9551, -0.161
 visible = false
 material_override = SubResource("ShaderMaterial_1p4jq")
 mesh = ExtResource("64_c1vnf")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1370555882]
+
+[node name="Control" parent="CanvasLayer" unique_id=1510729886 instance=ExtResource("123_mwsqg")]

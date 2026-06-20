@@ -8,7 +8,7 @@ enum House {
 	TYRELL,
 	BARATHEON
 }
-	
+
 static func get_house_name(house: House):
 	match (house):
 		House.LANNISTER:
