@@ -1,0 +1,118 @@
+[gd_scene format=3 uid="uid://ddbp5btmxnpdq"]
+
+[ext_resource type="Script" uid="uid://dnc0ww7wgytq" path="res://scenes/house/card/card.gd" id="1_41pcp"]
+[ext_resource type="FontFile" uid="uid://hkjpfk5sciuf" path="res://assets/fonts/Romic Std Bold.otf" id="2_41pcp"]
+[ext_resource type="Texture2D" uid="uid://csu8py8asrgpe" path="res://assets/sprites/cards/card_header.png" id="2_x7o6r"]
+[ext_resource type="Texture2D" uid="uid://fkb4g0ux57sx" path="res://assets/sprites/cards/card_info.png" id="3_g23f8"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_x7o6r"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ro6fe"]
+font = ExtResource("2_41pcp")
+font_size = 64
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_svh36"]
+font = ExtResource("2_41pcp")
+font_size = 36
+font_color = Color(0.28235295, 0.2, 0.11764706, 1)
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_fpa1e"]
+line_spacing = 0.0
+font = ExtResource("2_41pcp")
+font_size = 30
+font_color = Color(0.28235295, 0.2, 0.11764706, 1)
+
+[node name="Card" type="MarginContainer" unique_id=1650282672]
+script = ExtResource("1_41pcp")
+
+[node name="CardBackgroundPanel" type="Panel" parent="." unique_id=1548376190]
+custom_minimum_size = Vector2(440, 650)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_x7o6r")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=630502495]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="CardHeaderContainer" type="MarginContainer" parent="VBoxContainer" unique_id=1728451151]
+layout_mode = 2
+theme_override_constants/margin_left = -24
+theme_override_constants/margin_top = 39
+
+[node name="HeaderBgTexture" type="TextureRect" parent="VBoxContainer/CardHeaderContainer" unique_id=1759179513]
+layout_mode = 2
+texture = ExtResource("2_x7o6r")
+expand_mode = 3
+stretch_mode = 3
+
+[node name="PaddingContainer" type="MarginContainer" parent="VBoxContainer/CardHeaderContainer/HeaderBgTexture" unique_id=1082572679]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/CardHeaderContainer/HeaderBgTexture/PaddingContainer" unique_id=801702319]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="CardStrengthContainer" type="MarginContainer" parent="VBoxContainer/CardHeaderContainer/HeaderBgTexture/PaddingContainer/HBoxContainer" unique_id=877946961]
+layout_mode = 2
+theme_override_constants/margin_left = 23
+
+[node name="StrengthLabel" type="Label" parent="VBoxContainer/CardHeaderContainer/HeaderBgTexture/PaddingContainer/HBoxContainer/CardStrengthContainer" unique_id=750297061]
+layout_mode = 2
+text = "9"
+label_settings = SubResource("LabelSettings_ro6fe")
+
+[node name="CardNameContainer" type="MarginContainer" parent="VBoxContainer/CardHeaderContainer/HeaderBgTexture/PaddingContainer/HBoxContainer" unique_id=160902100]
+layout_mode = 2
+theme_override_constants/margin_left = 47
+
+[node name="NameLabel" type="Label" parent="VBoxContainer/CardHeaderContainer/HeaderBgTexture/PaddingContainer/HBoxContainer/CardNameContainer" unique_id=1064636066]
+layout_mode = 2
+text = "Sid Meier"
+label_settings = SubResource("LabelSettings_svh36")
+
+[node name="CardInfoContainer" type="MarginContainer" parent="VBoxContainer" unique_id=1026975839]
+layout_mode = 2
+theme_override_constants/margin_top = 514
+
+[node name="InfoBgTexture" type="TextureRect" parent="VBoxContainer/CardInfoContainer" unique_id=1203649114]
+layout_mode = 2
+texture = ExtResource("3_g23f8")
+expand_mode = 3
+stretch_mode = 3
+
+[node name="PaddingContainer" type="MarginContainer" parent="VBoxContainer/CardInfoContainer/InfoBgTexture" unique_id=1038128284]
+custom_minimum_size = Vector2(0, 224)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -112.0
+offset_bottom = 112.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="InfoLabel" type="Label" parent="VBoxContainer/CardInfoContainer/InfoBgTexture/PaddingContainer" unique_id=966398912]
+visible = false
+custom_minimum_size = Vector2(380, 0)
+layout_mode = 2
+text = "A tiebreaker in this combat is determined by a Sid Meier's Civilization 6 1v1 match using the CPL FFA ruleset"
+label_settings = SubResource("LabelSettings_fpa1e")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="IconsContainer" type="HBoxContainer" parent="VBoxContainer/CardInfoContainer/InfoBgTexture/PaddingContainer" unique_id=1289436280]
+layout_mode = 2
+alignment = 1
