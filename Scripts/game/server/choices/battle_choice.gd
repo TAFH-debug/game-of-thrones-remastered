@@ -9,6 +9,9 @@ enum TypeId {
 	CANCEL_ORDERS,
 	DORAN_PLAN,
 	THRONE_OF_BLADES,
+	RENLY_UPGRADE,
+	PATCHFACE,
+	AERON_DAMPHAIR,
 }
 
 ## The player who must respond.

@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://jbldba8ucek0"]
+
+[ext_resource type="FontFile" uid="uid://dnp1tak3l11o1" path="res://assets/fonts/Firlest-Regular.otf" id="1_1ede6"]
+[ext_resource type="FontFile" uid="uid://dxt24ahbea6gt" path="res://assets/fonts/Romic Std Medium.otf" id="2_vg2jc"]
+[ext_resource type="Texture2D" uid="uid://n4wm5ejyw7uq" path="res://assets/sprites/map/icon_supply.png" id="3_16ld0"]
+
+[sub_resource type="Theme" id="Theme_wriw7"]
+default_font = ExtResource("1_1ede6")
+default_font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_sxy27"]
+font = ExtResource("2_vg2jc")
+
+[node name="PlayerListElement" type="Control" unique_id=1863862063]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 84.0
+offset_bottom = 27.0
+
+[node name="Button" type="Button" parent="." unique_id=204388168]
+layout_mode = 0
+offset_right = 84.0
+offset_bottom = 27.0
+theme = SubResource("Theme_wriw7")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1494648456]
+layout_mode = 0
+offset_right = 84.0
+offset_bottom = 27.0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=949549847]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer" unique_id=433199580]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Player 1"
+label_settings = SubResource("LabelSettings_sxy27")
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer" unique_id=1606658826]
+layout_mode = 2
+texture = ExtResource("3_16ld0")
+expand_mode = 3

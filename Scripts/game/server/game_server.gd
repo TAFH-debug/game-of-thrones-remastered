@@ -263,6 +263,8 @@ func resolve_order(territory_name: String, params: Dictionary) -> void:
 
 	if not order.type.is_valid(order, params, self): return
 	order.type.execute(order, params, self)
+	if current_battle != null and current_battle.march_origin == null:
+		current_battle.march_origin = order
 	order.resolved = true
 	_client_events.player_order_resolve.rpc(player.id, territory_name)
 	_advance_action_sub_stage_if_empty()
@@ -357,20 +359,58 @@ func submit_card(card_id: StringName) -> void:
 	if player == null: return
 	var battle := current_battle
 
+	var used_card: HouseCard = null
 	if player.id == battle.attacker.id and battle.attacker_card == null:
 		battle.attacker_card = player.use_card(card_id)
+		used_card = battle.attacker_card
 	elif battle.defender != null and player.id == battle.defender.id and battle.defender_card == null:
 		battle.defender_card = player.use_card(card_id)
+		used_card = battle.defender_card
+	else:
+		return
+
+	# Aeron Damphair: offer the player the option to pay 2 power and swap
+	if used_card != null and used_card is AeronDamphairHouseCard \
+			and player.power >= 2 and not player.house_cards.is_empty():
+		var choice := AeronDamphairChoice.new()
+		choice.player_id = player.id
+		choice.ctx = {"as_attacker": player.id == battle.attacker.id}
+		_pending_choice = choice
+		choice.prompt(_client_events)
+		return
+
+	_check_both_cards_submitted()
+
+func _check_both_cards_submitted() -> void:
+	var battle := current_battle
+	if battle == null: return
 
 	var atk_ready := battle.attacker_card != null
 	var def_ready := battle.defender == null or battle.defender_card != null
 	if not (atk_ready and def_ready): return
 
-	battle.run_reveal_effects()  # e.g. Tyrion negates opponent
+	battle.run_reveal_effects(self)
+
+	# Tyrion Lannister: the targeted player must choose a replacement card
+	if battle.tyrion_fired:
+		battle.tyrion_fired = false
+		if battle.attacker_card == null and battle.attacker != null:
+			_client_events.select_house_card.rpc_id(
+				battle.attacker.id, battle.territory.get_id(),
+				battle.attacker.available_card_ids()
+			)
+			return
+		elif battle.defender_card == null and battle.defender != null:
+			_client_events.select_house_card.rpc_id(
+				battle.defender.id, battle.territory.get_id(),
+				battle.defender.available_card_ids()
+			)
+			return
 
 	var blade_holder := _get_token_holder_valyrian()
 	if blade_holder != null and not blade_holder.valyrian_blade_used:
-		if blade_holder.id == battle.attacker.id or (battle.defender != null and blade_holder.id == battle.defender.id):
+		if blade_holder.id == battle.attacker.id or \
+				(battle.defender != null and blade_holder.id == battle.defender.id):
 			var choice := ValyrianBladeChoice.new()
 			choice.player_id = blade_holder.id
 			choice.ctx = {"territory": battle.territory.get_id()}
@@ -445,12 +485,24 @@ func _finish_battle(battle: Battle, attacker_wins: bool) -> void:
 	_advance_action_sub_stage_if_empty()
 
 func _apply_attacker_wins(battle: Battle, prevent_retreat: bool) -> void:
-	var extra_kills := battle.defender_unblocked_swords()
-	var survivors := battle.territory.units.duplicate()
-	for _i in mini(extra_kills, survivors.size()):
-		survivors.pop_back()
-	# survivors retreat (TODO: real retreat system); eliminated here for simplicity
-	battle.territory.units = []
+	# Attacker's swords kill defender units (unless Blackfish is the defender)
+	if not battle.defender_prevents_casualties():
+		var kills := battle.attacker_unblocked_swords()
+		for _i in mini(kills, battle.territory.units.size()):
+			battle.territory.units.pop_back()
+	else:
+		battle.territory.units = []  # Defender still retreats/is eliminated
+
+	# Arianne Martell: defender loses but attacker cannot advance
+	if battle.prevent_attacker_advance:
+		notify_territory_changed(battle.territory)
+		return
+
+	# Defender's swords kill attacker units before they advance (unless Blackfish is the attacker)
+	if not battle.attacker_prevents_casualties():
+		var kills := battle.defender_unblocked_swords()
+		for _i in mini(kills, battle.attacking_units.size()):
+			battle.attacking_units.pop_back()
 
 	for unit: Unit in battle.attacking_units:
 		unit.territory = battle.territory.get_id()
@@ -463,6 +515,18 @@ func _apply_attacker_wins(battle: Battle, prevent_retreat: bool) -> void:
 	notify_territory_changed(battle.territory)
 
 func _apply_defender_wins(battle: Battle, _prevent_retreat: bool) -> void:
+	# Defender's swords kill attacking units (unless Blackfish is the attacker)
+	if not battle.attacker_prevents_casualties():
+		var kills := battle.defender_unblocked_swords()
+		for _i in mini(kills, battle.attacking_units.size()):
+			battle.attacking_units.pop_back()
+
+	# Attacker's swords kill defending units (unless Blackfish is the defender)
+	if not battle.defender_prevents_casualties():
+		var kills := battle.attacker_unblocked_swords()
+		for _i in mini(kills, battle.territory.units.size()):
+			battle.territory.units.pop_back()
+
 	# Attacking survivors retreat (TODO: real retreat system)
 	notify_territory_changed(battle.territory)
 
@@ -725,6 +789,30 @@ func notify_consolidate(player: GamePlayerData, territory: GameTerritory, power_
 	_client_events.power_consolidated.rpc(player.id, territory.get_id(), power_gained)
 
 # ── PRIVATE UTILITIES ─────────────────────────────────────────────────────────
+
+func _calc_support_excl_non_baratheon_ships(player_id: int, battle_territory: GameTerritory) -> int:
+	if player_id == -1: return 0
+	var total := 0
+	for order: Order in orders:
+		if order.owner.id != player_id: continue
+		if order.type.get_type() != OrderType.TYPE_SUPPORT: continue
+		var support_t := get_territory(order.territory)
+		if support_t == null or not support_t.is_adjacent_to(battle_territory.get_id()): continue
+		var bonus := 0
+		if order.type is SupportOrderType:
+			bonus = (order.type as SupportOrderType).bonus
+		var strength := 0
+		for unit: Unit in support_t.units:
+			if unit.type_key == "S":
+				var unit_player := get_player(unit.owner)
+				if unit_player != null and unit_player.house != null \
+						and unit_player.house.house_name == &"baratheon":
+					strength += unit.type.get_attack_power(unit, battle_territory.get_id())
+				# Non-Baratheon ships contribute 0 due to Salladhor Saan
+			else:
+				strength += unit.type.get_attack_power(unit, battle_territory.get_id())
+		total += strength + bonus
+	return total
 
 func _get_adjacent_orders(territory_id: String, exclude_owner: int) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []

@@ -19,8 +19,8 @@ func _init(
 	sword_icons = p_sword_icons
 	fortification_icons = p_fortification_icons
 
-## Called when both cards are revealed. Override for immediate reveal effects (e.g. Tyrion).
-func on_revealed(_battle: Battle, _as_attacker: bool) -> void:
+## Called when both cards are revealed. Override for immediate reveal effects.
+func on_revealed(_battle: Battle, _as_attacker: bool, _server: GameServer) -> void:
 	pass
 
 ## True if this card wins all ties in combat.
@@ -35,13 +35,15 @@ func forces_card() -> bool:
 func prevents_retreat() -> bool:
 	return false
 
+## True if this card's owner takes no casualties from swords or card abilities.
+func prevents_casualties() -> bool:
+	return false
+
 ## Return BattleChoice objects requiring player input after card reveal.
-## as_attacker: true if this card belongs to the attacker.
 func collect_choices(_battle: Battle, _as_attacker: bool, _attacker_wins: bool, _server: GameServer) -> Array:
 	return []
 
 ## Apply immediate post-choice effects (power drains, recycle, etc.).
-## Called by _finish_battle after all queued choices are resolved.
 func on_finish(_battle: Battle, _as_attacker: bool, _attacker_wins: bool, _server: GameServer) -> void:
 	pass
 

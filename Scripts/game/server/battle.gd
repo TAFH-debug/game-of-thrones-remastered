@@ -18,20 +18,52 @@ var defender_extra_swords: int = 0
 var attacker_card_negated: bool = false
 var defender_card_negated: bool = false
 
+# Extra CS/fort contributions from card on_revealed effects (Stannis, Davos, Theon, etc.)
+var attacker_extra_cs: int = 0
+var defender_extra_cs: int = 0
+var attacker_extra_forts: int = 0
+var defender_extra_forts: int = 0
+
+# Victarion: +1 bonus per ship when attacking; Ser Kevan: +1 bonus per footman when attacking
+var attacker_ship_attack_bonus: int = 0
+var attacker_footmen_attack_bonus: int = 0
+
+# Balon Greyjoy: opponent's house card printed CS becomes 0
+var attacker_cs_is_zero: bool = false
+var defender_cs_is_zero: bool = false
+
+# Blackfish: owner takes no casualties from swords or card abilities
+var attacker_no_casualties: bool = false
+var defender_no_casualties: bool = false
+
+# Arianne Martell: attacker wins combat but cannot move units into the territory
+var prevent_attacker_advance: bool = false
+
+# Tyrion Lannister (new): fired when Tyrion returns opponent's card; triggers re-prompt
+var tyrion_fired: bool = false
+
+# Ser Loras Tyrell: the march order that initiated this battle (for march-again ability)
+var march_origin: Order = null
+
 func attacker_strength() -> int:
-	var total := march_bonus + attacker_support
+	var total := march_bonus + attacker_support + attacker_extra_cs
 	for unit: Unit in attacking_units:
-		total += unit.type.get_attack_power(unit, territory.get_id())
+		var power := unit.type.get_attack_power(unit, territory.get_id())
+		if unit.type_key == "S":
+			power += attacker_ship_attack_bonus
+		elif unit.type_key == "F":
+			power += attacker_footmen_attack_bonus
+		total += power
 	if attacker_card:
-		total += attacker_card.combat_strength
+		total += 0 if attacker_cs_is_zero else attacker_card.combat_strength
 	return total
 
 func defender_strength() -> int:
-	var total := territory.garrison + territory.defend_bonus + defender_support
+	var total := territory.garrison + territory.defend_bonus + defender_support + defender_extra_cs
 	for unit: Unit in territory.units:
 		total += unit.type.get_defence_power(unit, territory.get_id())
 	if defender_card:
-		total += defender_card.combat_strength
+		total += 0 if defender_cs_is_zero else defender_card.combat_strength
 	return total
 
 func attacker_effective_swords() -> int:
@@ -46,13 +78,13 @@ func defender_effective_swords() -> int:
 
 func attacker_effective_forts() -> int:
 	if attacker_card_negated or attacker_card == null:
-		return 0
-	return attacker_card.fortification_icons
+		return attacker_extra_forts
+	return attacker_card.fortification_icons + attacker_extra_forts
 
 func defender_effective_forts() -> int:
 	if defender_card_negated or defender_card == null:
-		return 0
-	return defender_card.fortification_icons
+		return defender_extra_forts
+	return defender_card.fortification_icons + defender_extra_forts
 
 func attacker_unblocked_swords() -> int:
 	return maxi(0, attacker_effective_swords() - defender_effective_forts())
@@ -62,11 +94,11 @@ func defender_unblocked_swords() -> int:
 
 # ── Template-method wrappers (respect negation, delegate to card) ─────────────
 
-func run_reveal_effects() -> void:
+func run_reveal_effects(server: GameServer) -> void:
 	if attacker_card != null:
-		attacker_card.on_revealed(self, true)
+		attacker_card.on_revealed(self, true, server)
 	if defender_card != null:
-		defender_card.on_revealed(self, false)
+		defender_card.on_revealed(self, false, server)
 
 func attacker_wins_ties() -> bool:
 	return not attacker_card_negated and attacker_card != null and attacker_card.wins_ties()
@@ -85,6 +117,12 @@ func attacker_prevents_retreat() -> bool:
 
 func defender_prevents_retreat() -> bool:
 	return not defender_card_negated and defender_card != null and defender_card.prevents_retreat()
+
+func attacker_prevents_casualties() -> bool:
+	return not attacker_card_negated and attacker_card != null and attacker_card.prevents_casualties()
+
+func defender_prevents_casualties() -> bool:
+	return not defender_card_negated and defender_card != null and defender_card.prevents_casualties()
 
 func collect_attacker_choices(attacker_wins: bool, server: GameServer) -> Array:
 	if attacker_card_negated or attacker_card == null:

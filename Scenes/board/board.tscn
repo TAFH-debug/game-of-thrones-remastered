@@ -123,6 +123,7 @@
 [ext_resource type="Resource" path="res://data/territories/Winterfell_Port.tres" id="104_0lchu"]
 [ext_resource type="Resource" path="res://data/territories/Yronwood.tres" id="106_0duqv"]
 [ext_resource type="PackedScene" uid="uid://dtq00pp48lbks" path="res://scenes/game_ui.tscn" id="123_mwsqg"]
+[ext_resource type="PackedScene" uid="uid://jbldba8ucek0" path="res://prefabs/ui/player_list_element.tscn" id="124_l7a25"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vtpgt"]
 sky_top_color = Color(1, 1, 1, 1)
@@ -1481,3 +1482,18 @@ mesh = ExtResource("64_c1vnf")
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1370555882]
 
 [node name="Control" parent="CanvasLayer" unique_id=1510729886 instance=ExtResource("123_mwsqg")]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control" unique_id=2044079012]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer" unique_id=405545765]
+layout_mode = 2
+
+[node name="PlayerListElement3" parent="CanvasLayer/Control/MarginContainer/VBoxContainer" unique_id=491478781 instance=ExtResource("124_l7a25")]
+layout_mode = 2
