@@ -2,7 +2,7 @@ extends Node
 class_name PeerConnector
 
 const PORT = 4433
-const MAX_PLAYERS = 4
+const MAX_PLAYERS = 6
 
 var peer := ENetMultiplayerPeer.new()
 	

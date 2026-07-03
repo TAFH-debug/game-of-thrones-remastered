@@ -1479,21 +1479,3 @@ visible = false
 material_override = SubResource("ShaderMaterial_1p4jq")
 mesh = ExtResource("64_c1vnf")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1370555882]
-
-[node name="Control" parent="CanvasLayer" unique_id=1510729886 instance=ExtResource("123_mwsqg")]
-
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control" unique_id=2044079012]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer" unique_id=405545765]
-layout_mode = 2
-
-[node name="PlayerListElement3" parent="CanvasLayer/Control/MarginContainer/VBoxContainer" unique_id=491478781 instance=ExtResource("124_l7a25")]
-layout_mode = 2

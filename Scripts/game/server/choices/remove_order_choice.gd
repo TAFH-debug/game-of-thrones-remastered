@@ -2,7 +2,7 @@ class_name RemoveOrderChoice
 extends BattleChoice
 
 func prompt(events: ClientEvents) -> void:
-	events.prompt_card_choice.rpc_id(player_id, BattleChoice.TypeId.REMOVE_ORDER, "", ctx.get("adjacent", []))
+	events.prompt_card_choice.rpc_id(player_id, BattleChoice.TypeId.REMOVE_ORDER, "", _typed_options("adjacent"))
 
 func apply(server: GameServer, data: Dictionary) -> bool:
 	var target_tid: String = data.get("territory", "")

@@ -13,7 +13,7 @@ func get_type() -> String:
 func is_valid(order: Order, ctx: Dictionary, server: GameServer) -> bool:
 	var target_id: String = ctx.get("territory", "")
 	if target_id.is_empty():
-		return false
+		return true  # skip: remove token without raiding
 
 	var from_t := server.get_territory(order.territory)
 	var target_t := server.get_territory(target_id)
@@ -35,6 +35,8 @@ func is_valid(order: Order, ctx: Dictionary, server: GameServer) -> bool:
 
 func execute(order: Order, ctx: Dictionary, server: GameServer) -> void:
 	var target_id: String = ctx.get("territory", "")
+	if target_id.is_empty():
+		return  # skipped raid
 	var target_t := server.get_territory(target_id)
 	if target_t == null or target_t.order == null:
 		return

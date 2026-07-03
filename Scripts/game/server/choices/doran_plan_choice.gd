@@ -2,7 +2,7 @@ class_name DoranPlanChoice
 extends BattleChoice
 
 func prompt(events: ClientEvents) -> void:
-	events.prompt_card_choice.rpc_id(player_id, BattleChoice.TypeId.DORAN_PLAN, "", [])
+	events.prompt_card_choice.rpc_id(player_id, BattleChoice.TypeId.DORAN_PLAN, "", _typed_options("opts"))
 
 func apply(server: GameServer, data: Dictionary) -> bool:
 	var track_idx := clampi(data.get("track", 0), 0, 2)

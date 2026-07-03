@@ -1,9 +1,9 @@
 class_name UnitTypes
 
 static var unit_types: Dictionary = {
-	"FM": FootmanType.new(),
-	"KN":  KnightType.new(),
-	"SH":  ShipType.new(),
+	"F": FootmanType.new(),
+	"K": KnightType.new(),
+	"S": ShipType.new(),
 	"SE": SiegeEngineType.new()
 }
 

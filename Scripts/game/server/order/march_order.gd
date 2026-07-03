@@ -12,6 +12,8 @@ func get_type() -> String:
 
 func is_valid(order: Order, ctx: Dictionary, server: GameServer) -> bool:
 	var march_ctx := MarchOrderContext.from_dict(ctx)
+	if march_ctx.territory.is_empty():
+		return true  # skip: remove token without moving
 	var from_t := server.get_territory(order.territory)
 	var to_t := server.get_territory(march_ctx.territory)
 
@@ -38,6 +40,8 @@ func is_valid(order: Order, ctx: Dictionary, server: GameServer) -> bool:
 
 func execute(order: Order, ctx: Dictionary, server: GameServer) -> void:
 	var march_ctx := MarchOrderContext.from_dict(ctx)
+	if march_ctx.territory.is_empty():
+		return  # skipped march
 	var from_t := server.get_territory(order.territory)
 	var to_t := server.get_territory(march_ctx.territory)
 

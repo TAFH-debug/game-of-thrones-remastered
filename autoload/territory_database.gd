@@ -33,7 +33,10 @@ func get_territory(id: StringName) -> TerritoryDataResource:
 	return _territories.get(id, null)
 
 func all() -> Array[TerritoryDataResource]:
-	return _territories.values()
+	var result: Array[TerritoryDataResource] = []
+	for res in _territories.values():
+		result.append(res)
+	return result
 
 func ids() -> Array:
 	return _territories.keys()

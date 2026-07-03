@@ -2,7 +2,7 @@ class_name KillUnitChoice
 extends BattleChoice
 
 func prompt(events: ClientEvents) -> void:
-	events.prompt_card_choice.rpc_id(player_id, BattleChoice.TypeId.KILL_UNIT, "", ctx.get("opts", []))
+	events.prompt_card_choice.rpc_id(player_id, BattleChoice.TypeId.KILL_UNIT, "", _typed_options("opts"))
 
 func apply(server: GameServer, data: Dictionary) -> bool:
 	var unit_idx: int = data.get("unit_index", -1)

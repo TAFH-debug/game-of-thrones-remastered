@@ -2,7 +2,7 @@ class_name AeronDamphairChoice
 extends BattleChoice
 
 func prompt(events: ClientEvents) -> void:
-	events.prompt_card_choice.rpc_id(player_id, BattleChoice.TypeId.AERON_DAMPHAIR, "", [])
+	events.prompt_card_choice.rpc_id(player_id, BattleChoice.TypeId.AERON_DAMPHAIR, "", _typed_options("opts"))
 
 func apply(server: GameServer, data: Dictionary) -> bool:
 	var battle := server.current_battle

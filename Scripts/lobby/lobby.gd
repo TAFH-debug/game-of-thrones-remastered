@@ -27,9 +27,12 @@ func _on_peer_disconnected(id: int):
 	if multiplayer.is_server():
 		print("Player ", id, " disconnected")
 		var player = players.find_custom(func(x: PlayerData): return id == x.id)
+		if player == -1:
+			return
 		var player_data = players[player]
 		players.remove_at(player)
 		on_player_disconnected.emit(player_data)
+		player_disconnected.rpc(id)
 
 func join(ip: String, nickname: String):
 	peer_connector.join_game(ip)
@@ -49,7 +52,9 @@ func get_player_by_id(id: int) -> PlayerData:
 func setup(nickname: String):
 	if not multiplayer.is_server():
 		return
-		
+	if state == States.INGAME:
+		return
+
 	var player_data: PlayerData = PlayerData.new()
 	var sender_id = multiplayer.get_remote_sender_id()
 	player_data.id = sender_id if sender_id != 0 else multiplayer.get_unique_id()  # ✅
@@ -107,6 +112,15 @@ func player_connected(nickname: String, id: int):
 	players.append(player_data)
 	on_player_connected.emit(player_data)
 	
+@rpc("authority")
+func player_disconnected(id: int):
+	var player_idx = players.find_custom(func(x: PlayerData): return id == x.id)
+	if player_idx == -1:
+		return
+	var player_data = players[player_idx]
+	players.remove_at(player_idx)
+	on_player_disconnected.emit(player_data)
+
 @rpc("authority", "call_local")
 func player_ready(id: int, ready: bool):
 	var player_idx = players.find_custom(func(x: PlayerData): return id == x.id)

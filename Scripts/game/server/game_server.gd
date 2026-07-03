@@ -44,11 +44,25 @@ var _muster_queue: Array[int] = []
 
 var _client_events: ClientEvents
 
+# Starting units per house: territory_id -> unit type keys
+const STARTING_UNITS: Dictionary = {
+	&"stark":     {"Win": ["F", "K"], "WhH": ["F"], "TSS": ["S"]},
+	&"lannister": {"Lpt": ["F", "K"], "StS": ["F"], "TGS": ["S"]},
+	&"baratheon": {"DrS": ["F", "K"], "Kwd": ["F"], "ShB": ["S", "S"]},
+	&"greyjoy":   {"Pyk": ["F", "K"], "GwW": ["F"], "ImB": ["S"], "PyP": ["S"]},
+	&"tyrell":    {"HiG": ["F", "K"], "DnM": ["F"], "RwS": ["S"]},
+	&"martell":   {"Ssp": ["F", "K"], "SaS": ["F"], "SoD": ["S"]},
+}
+
 # ── INIT ─────────────────────────────────────────────────────────────────────
 
 func _ready() -> void:
 	_client_events = ClientEvents.new()
+	_client_events.name = "ClientEvents"
 	add_child(_client_events)
+
+func get_client_events() -> ClientEvents:
+	return _client_events
 
 func start_game(players_data: Array) -> void:
 	if players_data.size() < 2 or players_data.size() > 6:
@@ -67,6 +81,7 @@ func start_game(players_data: Array) -> void:
 		var data = players_data[i]
 		var player := GamePlayerData.new()
 		player.id = data.id
+		player.nickname = data.nickname
 		player.power = 5
 		player.coins = 5
 		player.supply = 0
@@ -79,12 +94,89 @@ func start_game(players_data: Array) -> void:
 	for res: TerritoryDataResource in TerritoryDB.all():
 		territories.append(GameTerritory.new(res))
 
+	_place_starting_units()
+
 	westeros_deck = WesterosDeck.new()
 	_update_supply()
 	_update_tokens()
 
+	var assignments: Dictionary = {}
+	for player: GamePlayerData in players:
+		assignments[player.id] = {
+			"house": str(player.house.house_name),
+			"nickname": player.nickname,
+		}
+	_client_events.game_started.rpc(assignments)
+
 	round = 1
 	_begin_planning_phase()
+
+func _place_starting_units() -> void:
+	for player: GamePlayerData in players:
+		var setup: Dictionary = STARTING_UNITS.get(player.house.house_name, {})
+		for tid: String in setup:
+			var t := get_territory(tid)
+			if t == null:
+				push_error("GameServer: unknown starting territory " + tid)
+				continue
+			t.controller = player.id
+			t.garrison = 0
+			for type_key: String in setup[tid]:
+				var unit := Unit.new()
+				unit.territory = tid
+				unit.owner = player.id
+				unit.type_key = type_key
+				unit.type = UnitTypes.get_type(type_key)
+				t.units.append(unit)
+
+# ── STATE SYNC ────────────────────────────────────────────────────────────────
+
+@rpc("any_peer", "call_local")
+func request_full_state() -> void:
+	if not multiplayer.is_server(): return
+	var sid := _get_sender_id()
+	_client_events.full_state.rpc_id(sid, _build_full_state(sid))
+
+func _build_full_state(viewer_id: int) -> Dictionary:
+	var players_arr: Array = []
+	for p: GamePlayerData in players:
+		var pd := p.to_dict()
+		pd["nickname"] = p.nickname
+		pd["cards"] = Array(p.available_card_ids()).map(func(c): return str(c))
+		players_arr.append(pd)
+
+	var terr_arr: Array = []
+	for t: GameTerritory in territories:
+		var units_arr: Array = []
+		for u: Unit in t.units:
+			units_arr.append(u.to_dict())
+		var entry := {
+			"id": str(t.get_id()),
+			"controller": t.controller,
+			"garrison": t.garrison,
+			"units": units_arr,
+		}
+		if t.order != null and (stage != Stage.PLANNING or t.order.owner.id == viewer_id):
+			entry["order"] = {
+				"type": OrderTypes.find_key(t.order.type),
+				"owner": t.order.owner.id,
+				"resolved": t.order.resolved,
+			}
+		terr_arr.append(entry)
+
+	var tracks_arr: Array = []
+	for track: InfluenceTrack in influence_tracks:
+		tracks_arr.append(track.arr.duplicate())
+
+	return {
+		"stage": stage,
+		"sub_stage": action_sub_stage,
+		"round": round,
+		"players": players_arr,
+		"territories": terr_arr,
+		"tracks": tracks_arr,
+		"wildling_strength": wildling_strength,
+	}
 
 # ── HELPERS ───────────────────────────────────────────────────────────────────
 
@@ -160,10 +252,11 @@ func _update_supply() -> void:
 func _begin_planning_phase() -> void:
 	stage = Stage.PLANNING
 	_update_tokens()
-	_client_events.begin_planning.rpc()
+	_client_events.begin_planning.rpc(round)
 	var raven_holder := _get_token_holder_raven()
 	if raven_holder:
-		_client_events.prompt_messenger_raven.rpc_id(raven_holder.id, -1, [])
+		var no_orders: Array[Dictionary] = []
+		_client_events.prompt_messenger_raven.rpc_id(raven_holder.id, -1, no_orders)
 
 @rpc("any_peer", "call_local")
 func place_orders(orders_data: Array[Dictionary]) -> void:
@@ -191,6 +284,7 @@ func place_orders(orders_data: Array[Dictionary]) -> void:
 		orders.append(new_order)
 		t.order = new_order
 
+	_client_events.player_orders_submitted.rpc(player.id)
 	_check_all_orders_placed()
 
 @rpc("any_peer", "call_local")
@@ -725,14 +819,28 @@ func _apply_muster_choice(player_id: int, muster_orders: Array[Dictionary]) -> v
 		var unit_type_key: String = mo.get("unit_type", "F")
 		var upgrade: bool = mo.get("upgrade", false)
 
-		var t := get_territory(tid)
-		if t == null or t.controller != player_id: continue
+		if UnitTypes.get_type(unit_type_key) == null: continue
 
-		var max_pts := t.get_mustering_points()
-		var used: int = spent.get(tid, 0)
-		var cost := 1 if upgrade else (2 if unit_type_key in ["K", "S", "SE"] else 1)
+		var t := get_territory(tid)
+		if t == null: continue
+
+		# Ships may muster into the port of a controlled castle territory;
+		# points are spent from the connected land area.
+		var point_source := t
+		if t.resource.area_type == TerritoryDataResource.AreaType.PORT:
+			if unit_type_key != "S": continue
+			var land := get_territory(str(t.resource.connected_land))
+			if land == null or land.controller != player_id: continue
+			point_source = land
+		elif t.controller != player_id:
+			continue
+
+		var src_id := str(point_source.get_id())
+		var max_pts := point_source.get_mustering_points()
+		var used: int = spent.get(src_id, 0)
+		var cost := 1 if upgrade else (2 if unit_type_key in ["K", "SE"] else 1)
 		if used + cost > max_pts: continue
-		spent[tid] = used + cost
+		spent[src_id] = used + cost
 
 		if upgrade:
 			var fi := -1
@@ -748,6 +856,7 @@ func _apply_muster_choice(player_id: int, muster_orders: Array[Dictionary]) -> v
 		new_unit.owner = player_id
 		new_unit.type_key = unit_type_key
 		new_unit.type = UnitTypes.get_type(unit_type_key)
+		t.controller = player_id
 		t.units.append(new_unit)
 
 		_client_events.player_mustered.rpc(player_id, tid, unit_type_key)
@@ -781,6 +890,8 @@ func notify_territory_changed(territory: GameTerritory) -> void:
 	_client_events.territory_updated.rpc(
 		territory.get_id(), territory.controller, territory.garrison, units_dict
 	)
+	if territory.controller != -1 and _count_castles(territory.controller) >= 7:
+		_client_events.game_over.rpc(territory.controller)
 
 func notify_order_raided(raider: GamePlayerData, target: GameTerritory) -> void:
 	_client_events.order_raided.rpc(raider.id, target.get_id())

@@ -2,7 +2,7 @@ class_name RenlyUpgradeChoice
 extends BattleChoice
 
 func prompt(events: ClientEvents) -> void:
-	events.prompt_card_choice.rpc_id(player_id, BattleChoice.TypeId.RENLY_UPGRADE, "", ctx.get("footmen", []))
+	events.prompt_card_choice.rpc_id(player_id, BattleChoice.TypeId.RENLY_UPGRADE, "", _typed_options("footmen"))
 
 func apply(server: GameServer, data: Dictionary) -> bool:
 	var unit_idx: int = data.get("unit_index", -1)

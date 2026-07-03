@@ -24,6 +24,13 @@ var ctx: Dictionary = {}
 func prompt(_events: ClientEvents) -> void:
 	pass
 
+## RPC args must match typed parameters exactly; untyped arrays are rejected.
+func _typed_options(key: String) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	for opt in ctx.get(key, []):
+		result.append(opt)
+	return result
+
 ## Apply the player's response. Return false if an async flow (bidding/muster/battle) started.
 func apply(_server: GameServer, _data: Dictionary) -> bool:
 	return true

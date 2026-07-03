@@ -2,6 +2,7 @@ extends Node
 class_name GamePlayerData
 
 var id: int
+var nickname: String = ""
 var coins: int = 5
 var power: int = 5
 var supply: int = 0

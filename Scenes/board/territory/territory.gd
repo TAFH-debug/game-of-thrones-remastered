@@ -2,6 +2,8 @@
 #class_name Territory
 extends Node3D
 
+signal clicked(territory: Node3D)
+
 @export var data: TerritoryDataResource:
 	set(value):
 		data = value
@@ -49,5 +51,7 @@ func _on_area_input_event(
 	_shape_idx: int
 	) -> void:
 	if event is InputEventMouseButton && (event.pressed && event.button_index == 1):
-		print("pressed LMB on area of territory: " + name)
-		set_selected(not _selected)
+		if clicked.get_connections().size() > 0:
+			clicked.emit(self)
+		else:
+			set_selected(not _selected)

@@ -2,7 +2,7 @@ class_name PatchfaceChoice
 extends BattleChoice
 
 func prompt(events: ClientEvents) -> void:
-	events.prompt_card_choice.rpc_id(player_id, BattleChoice.TypeId.PATCHFACE, "", ctx.get("opts", []))
+	events.prompt_card_choice.rpc_id(player_id, BattleChoice.TypeId.PATCHFACE, "", _typed_options("opts"))
 
 func apply(server: GameServer, data: Dictionary) -> bool:
 	var card_id: StringName = StringName(str(data.get("card_id", "")))

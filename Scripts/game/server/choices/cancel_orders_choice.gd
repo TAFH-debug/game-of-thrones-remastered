@@ -2,7 +2,7 @@ class_name CancelOrdersChoice
 extends BattleChoice
 
 func prompt(events: ClientEvents) -> void:
-	events.prompt_card_choice.rpc_id(player_id, BattleChoice.TypeId.CANCEL_ORDERS, "", ctx.get("orders", []))
+	events.prompt_card_choice.rpc_id(player_id, BattleChoice.TypeId.CANCEL_ORDERS, "", _typed_options("orders"))
 
 func apply(server: GameServer, data: Dictionary) -> bool:
 	var to_cancel: Array = data.get("territories", [])

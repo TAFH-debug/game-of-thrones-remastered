@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://t5diosqwlcic" path="res://scripts/lobby/chat_panel.gd" id="8_ncsg4"]
 [ext_resource type="PackedScene" uid="uid://ds842osihgwpb" path="res://prefabs/ui/message_scene.tscn" id="9_07nfq"]
 [ext_resource type="Script" uid="uid://depped3enxl34" path="res://scripts/lobby/scroll_container.gd" id="10_oipnb"]
+[ext_resource type="Script" path="res://scripts/lobby/leave_button.gd" id="11_leave"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_pc087"]
 font = ExtResource("1_pc087")
@@ -111,6 +112,7 @@ layout_mode = 2
 size_flags_vertical = 0
 texture_normal = ExtResource("6_omrgh")
 texture_pressed = ExtResource("7_ncsg4")
+script = ExtResource("11_leave")
 
 [node name="MarginContainer" type="MarginContainer" parent="NinePatchRect/HBoxContainer/VBoxContainer/MarginContainer2/HBoxContainer/TextureButton2" unique_id=959920674]
 layout_mode = 1
@@ -124,7 +126,7 @@ theme_override_constants/margin_top = 10
 [node name="Label" type="Label" parent="NinePatchRect/HBoxContainer/VBoxContainer/MarginContainer2/HBoxContainer/TextureButton2/MarginContainer" unique_id=1129721526]
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Gay"
+text = "Leave"
 label_settings = SubResource("LabelSettings_apkv3")
 
 [node name="Chat" type="VBoxContainer" parent="NinePatchRect/HBoxContainer" unique_id=686451047 node_paths=PackedStringArray("message_container")]
