@@ -1,7 +1,9 @@
 extends CanvasLayer
 class_name GameUI
 
-# All in-game HUD and dialogs, built in code. Talks to GameClient only.
+# In-game HUD and dialogs. Static layout lives in scenes/game_ui.tscn
+# (regenerate with tools/build_game_ui_scene.gd); this script only wires
+# signals and fills dynamic content. Talks to GameClient only.
 
 const ORDER_KEYS := [
 	["M+", "March +1"], ["M0", "March 0"], ["M-", "March -1"],
@@ -16,28 +18,32 @@ var card_catalog: Dictionary = {}   # card id -> HouseCard
 var done_players: Dictionary = {}   # pid -> true (orders submitted this round)
 var _bid_is_wildling := false
 
-# UI nodes
-var top_bar: PanelContainer
-var phase_label: Label
-var my_stats_label: Label
-var submit_btn: Button
-var raven_btn: Button
-var players_panel: PanelContainer
-var players_box: VBoxContainer
-var toast_box: VBoxContainer
-var targeting_bar: PanelContainer
-var targeting_label: Label
-var targeting_skip: Button
-var dialog: PanelContainer
-var dialog_title: Label
-var dialog_body: VBoxContainer
+# UI nodes (from scenes/game_ui.tscn)
+@onready var top_bar: PanelContainer = $TopBar
+@onready var phase_label: Label = $TopBar/HBox/PhaseLabel
+@onready var my_stats_label: Label = $TopBar/HBox/MyStatsLabel
+@onready var raven_btn: Button = $TopBar/HBox/RavenBtn
+@onready var submit_btn: Button = $TopBar/HBox/SubmitBtn
+@onready var players_panel: PanelContainer = $PlayersPanel
+@onready var players_box: VBoxContainer = $PlayersPanel/PlayersBox
+@onready var toast_box: VBoxContainer = $ToastBox
+@onready var targeting_bar: PanelContainer = $TargetingBar
+@onready var targeting_label: Label = $TargetingBar/HBox/TargetingLabel
+@onready var targeting_skip: Button = $TargetingBar/HBox/SkipBtn
+@onready var dialog: PanelContainer = $Dialog
+@onready var dialog_title: Label = $Dialog/VBox/DialogTitle
+@onready var dialog_body: VBoxContainer = $Dialog/VBox/DialogBody
 
 func setup(p_client: GameClient) -> void:
 	client = p_client
 
 func _ready() -> void:
 	_build_catalog()
-	_build_hud()
+	raven_btn.pressed.connect(_open_raven_dialog)
+	submit_btn.pressed.connect(func(): client.submit_orders())
+	$TopBar/HBox/LeaveBtn.pressed.connect(func(): client.leave_to_menu())
+	targeting_skip.pressed.connect(func(): client.skip_current_order())
+	$TargetingBar/HBox/CancelBtn.pressed.connect(func(): client._cancel_targeting())
 
 func _build_catalog() -> void:
 	var houses: Array = [
@@ -47,121 +53,6 @@ func _build_catalog() -> void:
 	for h in houses:
 		for c in h.get_deck():
 			card_catalog[str(c.id)] = c
-
-# ── HUD CONSTRUCTION ──────────────────────────────────────────────────────────
-
-func _panel_style(bg := Color(0.08, 0.07, 0.06, 0.85)) -> StyleBoxFlat:
-	var sb := StyleBoxFlat.new()
-	sb.bg_color = bg
-	sb.set_corner_radius_all(6)
-	sb.set_content_margin_all(10)
-	sb.border_color = Color(0.55, 0.45, 0.25)
-	sb.set_border_width_all(1)
-	return sb
-
-func _build_hud() -> void:
-	# Top bar
-	top_bar = PanelContainer.new()
-	top_bar.add_theme_stylebox_override("panel", _panel_style())
-	top_bar.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	add_child(top_bar)
-	var hb := HBoxContainer.new()
-	hb.add_theme_constant_override("separation", 20)
-	top_bar.add_child(hb)
-
-	phase_label = Label.new()
-	phase_label.text = "Connecting…"
-	hb.add_child(phase_label)
-
-	var spacer := Control.new()
-	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	hb.add_child(spacer)
-
-	my_stats_label = Label.new()
-	hb.add_child(my_stats_label)
-
-	raven_btn = Button.new()
-	raven_btn.text = "🐦 Raven"
-	raven_btn.visible = false
-	raven_btn.pressed.connect(_open_raven_dialog)
-	hb.add_child(raven_btn)
-
-	submit_btn = Button.new()
-	submit_btn.text = "Submit Orders"
-	submit_btn.visible = false
-	submit_btn.pressed.connect(func(): client.submit_orders())
-	hb.add_child(submit_btn)
-
-	var menu_btn := Button.new()
-	menu_btn.text = "Leave"
-	menu_btn.pressed.connect(func(): client.leave_to_menu())
-	hb.add_child(menu_btn)
-
-	# Players panel (right side)
-	players_panel = PanelContainer.new()
-	players_panel.add_theme_stylebox_override("panel", _panel_style())
-	players_panel.anchor_left = 1.0
-	players_panel.anchor_right = 1.0
-	players_panel.anchor_top = 0.5
-	players_panel.anchor_bottom = 0.5
-	players_panel.offset_left = -300
-	players_panel.offset_right = -10
-	players_panel.offset_top = -150
-	players_panel.grow_vertical = Control.GROW_DIRECTION_BOTH
-	add_child(players_panel)
-	players_box = VBoxContainer.new()
-	players_panel.add_child(players_box)
-
-	# Toast area (bottom left)
-	toast_box = VBoxContainer.new()
-	toast_box.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
-	toast_box.offset_left = 10
-	toast_box.offset_top = -300
-	toast_box.offset_bottom = -10
-	toast_box.grow_vertical = Control.GROW_DIRECTION_BEGIN
-	add_child(toast_box)
-
-	# Targeting bar (bottom center)
-	targeting_bar = PanelContainer.new()
-	targeting_bar.add_theme_stylebox_override("panel", _panel_style(Color(0.15, 0.1, 0.05, 0.9)))
-	targeting_bar.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
-	targeting_bar.offset_top = -70
-	targeting_bar.offset_bottom = -15
-	targeting_bar.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	targeting_bar.visible = false
-	add_child(targeting_bar)
-	var tb := HBoxContainer.new()
-	tb.add_theme_constant_override("separation", 15)
-	targeting_bar.add_child(tb)
-	targeting_label = Label.new()
-	tb.add_child(targeting_label)
-	targeting_skip = Button.new()
-	targeting_skip.text = "Skip order"
-	targeting_skip.pressed.connect(func(): client.skip_current_order())
-	tb.add_child(targeting_skip)
-	var cancel := Button.new()
-	cancel.text = "Cancel"
-	cancel.pressed.connect(func(): client._cancel_targeting())
-	tb.add_child(cancel)
-
-	# Modal dialog (center)
-	dialog = PanelContainer.new()
-	dialog.add_theme_stylebox_override("panel", _panel_style(Color(0.1, 0.08, 0.06, 0.97)))
-	dialog.set_anchors_preset(Control.PRESET_CENTER)
-	dialog.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	dialog.grow_vertical = Control.GROW_DIRECTION_BOTH
-	dialog.custom_minimum_size = Vector2(420, 0)
-	dialog.visible = false
-	add_child(dialog)
-	var dv := VBoxContainer.new()
-	dv.add_theme_constant_override("separation", 10)
-	dialog.add_child(dv)
-	dialog_title = Label.new()
-	dialog_title.add_theme_font_size_override("font_size", 22)
-	dv.add_child(dialog_title)
-	dialog_body = VBoxContainer.new()
-	dialog_body.add_theme_constant_override("separation", 6)
-	dv.add_child(dialog_body)
 
 # ── GENERIC HELPERS ───────────────────────────────────────────────────────────
 

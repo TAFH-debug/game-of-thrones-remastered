@@ -1,9 +1,200 @@
 [gd_scene format=3 uid="uid://dtq00pp48lbks"]
 
-[node name="Control" type="Control" unique_id=1510729886]
-layout_mode = 3
-anchors_preset = 15
+[ext_resource type="Script" uid="uid://cobq2mrwhkcim" path="res://scripts/game/client/game_ui.gd" id="1_yubou"]
+[ext_resource type="FontFile" uid="uid://dxt24ahbea6gt" path="res://assets/fonts/Romic Std Medium.otf" id="2_rns2u"]
+
+[sub_resource type="Theme" id="Theme_u001w"]
+default_font = ExtResource("2_rns2u")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rns2u"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.08, 0.07, 0.06, 0.85)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.55, 0.45, 0.25, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="LabelSettings" id="LabelSettings_u2dgd"]
+font = ExtResource("2_rns2u")
+
+[sub_resource type="Theme" id="Theme_bt76a"]
+default_font = ExtResource("2_rns2u")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u001w"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.08, 0.07, 0.06, 0.85)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.55, 0.45, 0.25, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="Theme" id="Theme_djwj0"]
+default_font = ExtResource("2_rns2u")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u2dgd"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.15, 0.1, 0.05, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.55, 0.45, 0.25, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="Theme" id="Theme_e0pfi"]
+default_font = ExtResource("2_rns2u")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bt76a"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.1, 0.08, 0.06, 0.97)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.55, 0.45, 0.25, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="GameUI" type="CanvasLayer" unique_id=582441672]
+script = ExtResource("1_yubou")
+
+[node name="TopBar" type="PanelContainer" parent="." unique_id=925005736]
+anchors_preset = 10
 anchor_right = 1.0
+theme = SubResource("Theme_u001w")
+theme_override_styles/panel = SubResource("StyleBoxFlat_rns2u")
+
+[node name="HBox" type="HBoxContainer" parent="TopBar" unique_id=1909409804]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="PhaseLabel" type="Label" parent="TopBar/HBox" unique_id=1420706655]
+layout_mode = 2
+text = "Connecting…"
+label_settings = SubResource("LabelSettings_u2dgd")
+
+[node name="Spacer" type="Control" parent="TopBar/HBox" unique_id=829928504]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MyStatsLabel" type="Label" parent="TopBar/HBox" unique_id=480283787]
+layout_mode = 2
+
+[node name="RavenBtn" type="Button" parent="TopBar/HBox" unique_id=1845749004]
+visible = false
+layout_mode = 2
+text = "🐦 Raven"
+
+[node name="SubmitBtn" type="Button" parent="TopBar/HBox" unique_id=1190924226]
+visible = false
+layout_mode = 2
+text = "Submit Orders"
+
+[node name="LeaveBtn" type="Button" parent="TopBar/HBox" unique_id=1243912672]
+layout_mode = 2
+text = "Leave"
+
+[node name="PlayersPanel" type="PanelContainer" parent="." unique_id=623725466]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -150.0
+offset_right = -10.0
+grow_vertical = 2
+theme = SubResource("Theme_bt76a")
+theme_override_styles/panel = SubResource("StyleBoxFlat_u001w")
+
+[node name="PlayersBox" type="VBoxContainer" parent="PlayersPanel" unique_id=1859191149]
+layout_mode = 2
+
+[node name="ToastBox" type="VBoxContainer" parent="." unique_id=2097606091]
+anchors_preset = 2
+anchor_top = 1.0
 anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = -300.0
+offset_bottom = -10.0
+grow_vertical = 0
+
+[node name="TargetingBar" type="PanelContainer" parent="." unique_id=1733717485]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_top = -70.0
+offset_bottom = -15.0
+grow_horizontal = 2
+theme = SubResource("Theme_djwj0")
+theme_override_styles/panel = SubResource("StyleBoxFlat_u2dgd")
+
+[node name="HBox" type="HBoxContainer" parent="TargetingBar" unique_id=565295106]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="TargetingLabel" type="Label" parent="TargetingBar/HBox" unique_id=139426283]
+layout_mode = 2
+
+[node name="SkipBtn" type="Button" parent="TargetingBar/HBox" unique_id=1639737365]
+layout_mode = 2
+text = "Skip order"
+
+[node name="CancelBtn" type="Button" parent="TargetingBar/HBox" unique_id=407179606]
+layout_mode = 2
+text = "Cancel"
+
+[node name="Dialog" type="PanelContainer" parent="." unique_id=1281674023]
+visible = false
+custom_minimum_size = Vector2(420, 0)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
+theme = SubResource("Theme_e0pfi")
+theme_override_styles/panel = SubResource("StyleBoxFlat_bt76a")
+
+[node name="VBox" type="VBoxContainer" parent="Dialog" unique_id=2055607155]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="DialogTitle" type="Label" parent="Dialog/VBox" unique_id=1146138742]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+
+[node name="DialogBody" type="VBoxContainer" parent="Dialog/VBox" unique_id=1754736515]
+layout_mode = 2
+theme_override_constants/separation = 6
